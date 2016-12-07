@@ -42,10 +42,39 @@ test_char_at() {
   else
     log_failure "char_at should return ''"
   fi
-
-
-
-
 }
 
+test_compare_to() {
+  log_header "Test compare_to"
+
+  log_warning "Pending tests"
+}
+
+test_compare_to_ignore_case() {
+  log_header "Test compare_to_ignore_case"
+
+  log_warning "Pending tests"
+}
+
+test_concat() {
+  log_header "Test concat"
+
+  log_warning "Pending tests"
+}
+
+test_contains() {
+  log_header "Test contains"
+
+  log_warning "Pending tests"
+}
+
+
+
+
+# test calls
+
 test_char_at
+test_compare_to
+test_compare_to_ignore_case
+test_concat
+test_contains
