@@ -67,32 +67,66 @@ assert_false() {
 assert_array_eq() {
 
   declare -a expected=("${!1}")
-  # echo "${expected[@]}"
+  # echo "AAE ${expected[@]}"
 
   declare -a actual=("${!2}")
-  # echo "${actual[@]}"
+  # echo "AAE ${actual[@]}"
 
   local msg
   if [ "$#" -ge 3 ]; then
     msg="$3"
   fi
 
+  local return_code
+  return_code=0
   if [ ! "${#expected[@]}" == "${#actual[@]}" ]; then
-    [ "${#msg}" -gt 0 ] && log_failure "(${expected[*]}) != (${actual[*]}) :: $msg" || true
-    return 1
+    return_code=1
   fi
 
   local i
   for (( i=1; i < ${#expected[@]} + 1; i+=1 )); do
     if [ ! "${expected[$i-1]}" == "${actual[$i-1]}" ]; then
-      return 1
+      return_code=1
+      break
     fi
   done
-  return 0
+
+  if [ "$return_code" == 1 ]; then
+    [ "${#msg}" -gt 0 ] && log_failure "(${expected[*]}) != (${actual[*]}) :: $msg" || true
+  fi
+
+  return "$return_code"
 }
 
 assert_array_not_eq() {
-  :
+
+  declare -a expected=("${!1}")
+  declare -a actual=("${!2}")
+
+  local msg
+  if [ "$#" -ge 3 ]; then
+    msg="$3"
+  fi
+
+  local return_code
+  return_code=1
+  if [ ! "${#expected[@]}" == "${#actual[@]}" ]; then
+    return_code=0
+  fi
+
+  local i
+  for (( i=1; i < ${#expected[@]} + 1; i+=1 )); do
+    if [ ! "${expected[$i-1]}" == "${actual[$i-1]}" ]; then
+      return_code=0
+      break
+    fi
+  done
+
+  if [ "$return_code" == 1 ]; then
+    [ "${#msg}" -gt 0 ] && log_failure "(${expected[*]}) == (${actual[*]}) :: $msg" || true
+  fi
+
+  return "$return_code"
 }
 
 assert_empty() {
