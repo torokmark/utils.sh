@@ -23,22 +23,21 @@ REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
 
 log_header() { 
-	printf "\n${BOLD}${MAGENTA}==========  %s  ==========${NORMAL}\n" "$@"
+	printf "\n${BOLD}${MAGENTA}==========  %s  ==========${NORMAL}\n" "$@" >&2
 }
 
-
 log_success() {
-	printf "${GREEN}✔ %s${NORMAL}\n" "$@"
+	printf "${GREEN}✔ %s${NORMAL}\n" "$@" >&2
 }
 
 log_failure() {
-	printf "${RED}✖ %s${NORMAL}\n" "$@"
+	printf "${RED}✖ %s${NORMAL}\n" "$@" >&2
 }
 
 log_warning() {
-	printf "${YELLOW}➜ %s${NORMAL}\n" "$@"
+	printf "${YELLOW}➜ %s${NORMAL}\n" "$@" >&2
 }
 
 log_info() {
-	printf "${UNDERLINE}${BLINK}${WHITE}Info:${NORMAL}  ${WHITE}%s${NORMAL}\n" "$@"
+	printf "${UNDERLINE}${BLINK}${WHITE}Info:${NORMAL}  ${WHITE}%s${NORMAL}\n" "$@" >&2
 }

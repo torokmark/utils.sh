@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+#####################################################################
+##
+## String extension of shell (bash, ...)
+##   with well-known function for string manipulation
+##
+## @author Mark Torok
+##
+## @date: 07. Dec. 2016
+##
+## @license MIT
+##
+#####################################################################
+
 source "../console.sh"
 source "./assert.sh"
 

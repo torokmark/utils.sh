@@ -2,24 +2,40 @@
 
 #####################################################################
 ##
+## title:
 ## String extension of shell (bash, ...)
 ##   with well-known function for string manipulation
 ## Function list based on:
 ##   https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
 ##
-## @author Mark Torok
+## author: Mark Torok
 ##
-## @date: 07. Dec. 2016
+## date: 07. Dec. 2016
 ##
-## @license MIT
+## license: MIT
 ##
 #####################################################################
 
 source "../console.sh"
 
+## pre-condition:
+##   - number of params cannot be less than two
+##
+## params:
+##   - str: string : the string we investigate
+##   - pos: integer : the position in which the character sits
+## return:
+##   - retval: character : the character on the passed position
 char_at() {
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
   local str="$1"
   local pos="$2"  # pos must be >= 0
+
+  if [[ "$pos" -lt 0 ]]; then
+    pos=${#str}
+  fi
 
   local retval
   retval=${str:pos:1}
@@ -28,7 +44,24 @@ char_at() {
 }
 
 compare_to() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local left right
+  left="$1"
+  right="$2"
+
+  local retval
+
+  if [[ "$left" < "$right" ]]; then
+    retval=-1
+  elif [[ "$left" == "$right" ]]; then
+    retval=0
+  else
+    retval=1
+  fi
+
+  echo "$retval"
 }
 
 compare_to_ignore_case() {
