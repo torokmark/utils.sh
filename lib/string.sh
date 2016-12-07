@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+source "../console.sh"
 
 char_at() {
-  local STR="$1"
-  local POS="$2"
-  local retval
+  local str="$1"
+  local pos="$2"  # pos must be >= 0
 
-  retval=${STR:POS:1}
+  local retval
+  retval=${str:pos:1}
+
   echo "$retval"
 }
