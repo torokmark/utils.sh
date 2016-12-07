@@ -3,37 +3,24 @@
 source "../console.sh"
 source "./assert.sh"
 
+log_header "Test assert : test_assert.sh"
+
 test_assert_eq() {
   log_header "Test :: assert_eq"
 
   assert_eq "Hello" "Hello"
   if [ "$?" == 0 ]; then
-    log_success "Two 'Hello's are equivalent"
+    log_success "assert_eq returns 0 if two words are equal"
   else
-    log_failure "We have a problem"
+    log_failure "assert_eq should return 1"
   fi
 
   assert_eq "Hello" "World"
   if [ "$?" == 1 ]; then
     log_success "assert_eq returns 1 if two words are not equal"
   else
-    log_failure "Obviously the two words are not equivalent"
+    log_failure "assert_eq should return 0"
   fi
-  : '
-  assert_eq "Hello" "Hello" "Equals message"
-  if [ "$?" == 0 ]; then
-    log_success "Two \"Hello\"s are equivalent"
-  else
-    log_failure "We have a problem"
-  fi
-
-  assert_eq "Hello" "World" "Equals message"
-  if [ "$?" == 0 ]; then
-    log_success "Two \"Hello\"s are equivalent"
-  else
-    log_failure "Other message comes as well"
-  fi
-  '
 }
 
 test_assert_not_eq() {
@@ -41,16 +28,16 @@ test_assert_not_eq() {
 
   assert_not_eq "Hello" "Hello"
   if [ "$?" == 1 ]; then
-    log_success "The two words are equivalent"
+    log_success "assert_not_eq returns 1 if two words are equivalent"
   else
-    log_failure "assert_not_eq does not work"
+    log_failure "assert_not_eq should return 0"
   fi
 
   assert_not_eq "Hello" "World"
   if [ "$?" == 0 ]; then
     log_success "assert_not_eq returns 0 if two params are not equal"
   else
-    log_failure "assert_not_eq does not work"
+    log_failure "assert_not_eq should return 1"
   fi
 }
 
