@@ -50,7 +50,7 @@ test_assert_not_eq() {
   if [ "$?" == 0 ]; then
     log_success "assert_not_eq returns 0 if two params are not equal"
   else
-    log_failure "assert_not_eq does not work"    
+    log_failure "assert_not_eq does not work"
   fi
 }
 
@@ -88,6 +88,50 @@ test_assert_false() {
   else
     log_failure "assert_false does not work"
   fi
+}
+
+test_assert_array_eq() {
+  log_header "Test :: assert_array_eq"
+
+  declare -a exp
+  declare -a act
+  : '
+  assert_array_eq ("one" "tw oo" "333") ("one" "tw oo" "333")
+  if [ "$?" == 0 ]; then
+    log_success "assert_array_eq returns 0 if two arrays are equal by values"
+  else
+    log_failure "assert_array_eq should be equal"
+  fi
+  '
+  exp=("one")
+  act=("one" "tw oo" "333")
+  assert_array_eq exp[@] act[@] "Different length"  # it can be an issue on other implementation of shell
+  if [ "$?" == 1 ]; then
+    log_success "assert_array_eq returns 1 if the lengths of the two arrays are not equal"
+  else
+    log_failure "assert_array_eq should be equal"
+  fi
+  : '
+  assert_array_eq ("one" "222" "333") ("one" "tw oo" "333")
+  if [ "$?" == 1 ]; then
+    log_success "assert_array_eq returns 1 if two arrays are not equal"
+  else
+    log_failure "assert_array_eq should be equal"
+  fi
+
+  assert_array_eq () ("one" "tw oo" "333")
+  if [ "$?" == 1 ]; then
+    log_success "assert_array_eq returns 1 if two arrays are not equal"
+  else
+    log_failure "assert_array_eq should be equal"
+  fi
+  '
+}
+
+test_assert_array_not_eq() {
+  log_header "Test :: assert_array_not_eq"
+
+  log_warning "Pending tests"
 }
 
 test_assert_empty() {
@@ -147,6 +191,7 @@ test_assert_eq
 test_assert_not_eq
 test_assert_true
 test_assert_false
-
+test_assert_array_eq
+test_assert_array_not_eq
 test_assert_empty
 test_assert_not_empty

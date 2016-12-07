@@ -5,16 +5,16 @@ source "../console.sh"
 assert_eq() {
   local expected="$1"
   local actual="$2"
-  local MSG
+  local msg
 
   if [ "$#" -ge 3 ]; then
-    MSG="$3"
+    msg="$3"
   fi
 
   if [ "$expected" == "$actual" ]; then
     return 0
   else
-    [ "${#MSG}" -gt 0 ] && log_failure "$MSG" || true
+    [ "${#msg}" -gt 0 ] && log_failure "$expected == $actual :: $msg" || true
     return 1
   fi
 }
@@ -22,16 +22,16 @@ assert_eq() {
 assert_not_eq() {
   local expected="$1"
   local actual="$2"
-  local MSG
+  local msg
 
   if [ "$#" -ge 3 ]; then
-    MSG="$3"
+    msg="$3"
   fi
 
   if [ ! "$expected" == "$actual" ]; then
     return 0
   else
-    [ "${#MSG}" -gt 0 ] && log_failure "$MSG" || true
+    [ "${#msg}" -gt 0 ] && log_failure "$expected != $actual :: $msg" || true
     return 1
   fi
 }
@@ -65,7 +65,30 @@ assert_false() {
 }
 
 assert_array_eq() {
-  :
+
+  declare -a expected=("${!1}")
+  # echo "${expected[@]}"
+
+  declare -a actual=("${!2}")
+  # echo "${actual[@]}"
+
+  local msg
+  if [ "$#" -ge 3 ]; then
+    msg="$3"
+  fi
+
+  if [ ! "${#expected[@]}" == "${#actual[@]}" ]; then
+    [ "${#msg}" -gt 0 ] && log_failure "(${expected[*]}) != (${actual[*]}) :: $msg" || true
+    return 1
+  fi
+
+  local i
+  for (( i=1; i < ${#expected[@]} + 1; i+=1 )); do
+    if [ ! "${expected[$i-1]}" == "${actual[$i-1]}" ]; then
+      return 1
+    fi
+  done
+  return 0
 }
 
 assert_array_not_eq() {
