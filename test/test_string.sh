@@ -152,7 +152,7 @@ test_compare_to_ignore_case() {
   actual=$( compare_to_ignore_case "APplE peAR" "apple pear" )
   assert_eq 0 "$actual" "should be 0"
   if [[ "$?" == 0 ]]; then
-    log_success "compare_to_ignore_case returns 0 if two sides are equal"
+    log_success "compare_to_ignore_case returns 0 if two sides are equal (ignore case)"
   else
     log_failure "compare_to_ignore_case should return 0"
   fi
@@ -160,7 +160,7 @@ test_compare_to_ignore_case() {
   actual=$( compare_to_ignore_case "APple pear" "apfel" )
   assert_eq 1 "$actual" "should be 1"
   if [[ "$?" == 0 ]]; then
-    log_success "compare_to_ignore_case returns 1 if left lt right"
+    log_success "compare_to_ignore_case returns 1 if left gt right (ignore case)"
   else
     log_failure "compare_to_ignore_case should return 1"
   fi
@@ -169,14 +169,116 @@ test_compare_to_ignore_case() {
 test_concat() {
   log_header "Test concat"
 
-  log_warning "Pending tests"
+  local actual
+
+  actual=$( concat "apple" "pear" )
+  assert_eq "applepear" "$actual" "should be applepear"
+  if [[ "$?" == 0 ]]; then
+    log_success "concat returns concatenation of the two params"
+  else
+    log_failure "concat should return applepear"
+  fi
+
+  actual=$( concat "apple" "" )
+  assert_eq "apple" "$actual" "should be apple"
+  if [[ "$?" == 0 ]]; then
+    log_success "concat returns the word if the other one is empty"
+  else
+    log_failure "concat should return apple"
+  fi
+
+  actual=$( concat "" "" )
+  assert_eq "" "$actual" "should be ''"
+  if [[ "$?" == 0 ]]; then
+    log_success "concat returns empty string if params are empty"
+  else
+    log_failure "concat should return ''"
+  fi
 }
 
 test_contains() {
   log_header "Test contains"
 
+  local actual
+
+  actual=$( contains "apple" "ppl" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "contains returns true if first string contains the second"
+  else
+    log_failure "contains should return true"
+  fi
+
+  actual=$( contains "apple" "pear" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "contains returns false if first string not contains the second"
+  else
+    log_failure "contains should return false"
+  fi
+
+  actual=$( contains "apple" "" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "contains returns true if second string is '' (empty)"
+  else
+    log_failure "contains should return true"
+  fi
+}
+
+test_count() {
+  log_header "Test count"
+
+  log_warning "count returns 2 if found two matches of characters"
+  log_warning "count returns 3 if found three matches of substrings"
+  log_warning "count returns 0 if no maching found"
+  log_warning "count returns 1 if the pattern matches the whole string"
+}
+
+test_ends_with() {
+  log_header "Test ends_with"
+
   log_warning "Pending tests"
 }
+
+test_equals() {
+  log_header "Test equals"
+
+  log_warning "Pending tests"
+}
+
+test_equals_ignore_case() {
+  log_header "Test equals_ignore_case"
+
+  log_warning "Pending tests"
+}
+
+test_format() {
+  log_header "Test format"
+
+  log_warning "Pending tests"
+}
+
+test_index_of() {
+  log_header "Test index_of"
+
+  log_warning "Pending tests"
+}
+
+test_is_empty() {
+  log_header "Test is_empty"
+
+  log_warning "Pending tests"
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -189,3 +291,10 @@ test_compare_to
 test_compare_to_ignore_case
 test_concat
 test_contains
+test_count
+test_ends_with
+test_equals
+test_equals_ignore_case
+test_format
+test_index_of
+test_is_empty

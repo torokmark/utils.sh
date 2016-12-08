@@ -104,11 +104,35 @@ compare_to_ignore_case() {
 }
 
 concat() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local left right
+  left="$1"
+  right="$2"
+
+  local retval
+  retval+="$left$right"
+
+  echo "$retval"
 }
 
 contains() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local left right
+  left="$1"
+  right="$2"
+
+  local retval
+  retval=false
+
+  if [[ "$left" == *"$right"* ]]; then
+    retval=true
+  fi
+
+  echo "$retval"
 }
 
 count() {
