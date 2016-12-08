@@ -229,7 +229,16 @@ test_contains() {
 test_count() {
   log_header "Test count"
 
-  log_warning "count returns 2 if found two matches of characters"
+  local actual
+
+  actual=$( count "apple pear" "p" )
+  assert_eq 3 "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "count returns 3 if found three matches of characters"
+  else
+    log_failure "count should return 3"
+  fi
+
   log_warning "count returns 3 if found three matches of substrings"
   log_warning "count returns 0 if no maching found"
   log_warning "count returns 1 if the pattern matches the whole string"

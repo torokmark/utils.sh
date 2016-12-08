@@ -136,9 +136,20 @@ contains() {
 }
 
 count() {
-  :
-}
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
+  local str pattern
+  str="$1"
+  pattern="$2"
+
+  local res retval
+  res="${s%l%$pattern%g}"
+  log_info "$res"
+  retval="${#res}"
+  return "$retval"
+}
+count "apple" "p"
 ends_with() {
   :
 }
