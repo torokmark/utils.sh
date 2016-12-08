@@ -2,14 +2,19 @@
 
 #####################################################################
 ##
-## String extension of shell (bash, ...)
-##   with well-known function for string manipulation
+## title: Assert Extension
 ##
-## @author Mark Torok
+## description:
+## Assert extension of shell (bash, ...)
+##   with the common assert functions
+## Function list based on:
+##   http://junit.sourceforge.net/javadoc/org/junit/Assert.html
 ##
-## @date: 07. Dec. 2016
+## author: Mark Torok
 ##
-## @license MIT
+## date: 07. Dec. 2016
+##
+## license: MIT
 ##
 #####################################################################
 

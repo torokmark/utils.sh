@@ -2,11 +2,14 @@
 
 #####################################################################
 ##
-## title:
+## title: String Extension
+##
+## description:
 ## String extension of shell (bash, ...)
 ##   with well-known function for string manipulation
 ## Function list based on:
 ##   https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
+##   https://docs.python.org/2/library/string.html#string-functions
 ##
 ## author: Mark Torok
 ##
@@ -17,6 +20,10 @@
 #####################################################################
 
 source "../console.sh"
+
+capitalize() {
+  :
+}
 
 ## pre-condition:
 ##   - number of params cannot be less than two
@@ -76,6 +83,10 @@ contains() {
   :
 }
 
+count() {
+  :
+}
+
 ends_with() {
   :
 }
@@ -101,6 +112,10 @@ index_of() {
 }
 
 is_empty() {
+  :
+}
+
+join_fields() {
   :
 }
 
@@ -142,10 +157,22 @@ starts_with() {
   :
 }
 
+strip() {
+  :
+}
+
 ## Example:
 ##   begindex
 ##   begindex, endindex
 substring() {
+  :
+}
+
+swapcase() {
+  :
+}
+
+title() {
   :
 }
 

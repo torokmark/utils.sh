@@ -2,14 +2,14 @@
 
 #####################################################################
 ##
-## String extension of shell (bash, ...)
-##   with well-known function for string manipulation
+## description:
+## Tests for assert extension
 ##
-## @author Mark Torok
+## author: Mark Torok
 ##
-## @date: 07. Dec. 2016
+## date: 07. Dec. 2016
 ##
-## @license MIT
+## license: MIT
 ##
 #####################################################################
 

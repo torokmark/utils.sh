@@ -2,10 +2,8 @@
 
 #####################################################################
 ##
-## String extension of shell (bash, ...)
-##   with well-known function for string manipulation
-## Function list based on:
-##   https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
+## description:
+## Tests for the string extension
 ##
 ## author: Mark Torok
 ##
@@ -90,8 +88,29 @@ test_compare_to() {
     log_failure "compare_to should return 1"
   fi
 
-  log_warning "compare_to returns 0 if two sides are equal"
-  log_warning "compare_to returns -1 if left lt right lexicographically"
+  actual=$( compare_to "apple pear" "apple pear" )
+  assert_eq 0 "$actual" "should be 0"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to returns 0 if two sides are equal"
+  else
+    log_failure "compare_to should return 0"
+  fi
+
+  actual=$( compare_to "apple pear" "apfel" )
+  assert_eq 1 "$actual" "should be 1"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to returns 1 if left lt right lexicographically"
+  else
+    log_failure "compare_to should return 1"
+  fi
+
+  actual=$( compare_to "APple pear" "Apple pear" )
+  assert_eq -1 "$actual" "should be -1"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to returns -1 if left gt right lexicographically (case sensitive)"
+  else
+    log_failure "compare_to should return -1"
+  fi
 }
 
 test_compare_to_ignore_case() {
