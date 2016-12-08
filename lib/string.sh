@@ -22,7 +22,14 @@
 source "../console.sh"
 
 capitalize() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+  local str="$1"
+
+  local retval
+  retval="${str^}"
+
+  echo "$retval"
 }
 
 ## pre-condition:
@@ -50,6 +57,8 @@ char_at() {
   echo "$retval"
 }
 
+# like sort method
+# Apple pear < APple peAr
 compare_to() {
   # pre-conditions:
   [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
@@ -64,15 +73,34 @@ compare_to() {
     retval=-1
   elif [[ "$left" == "$right" ]]; then
     retval=0
-  else
+  elif [[ "$left" > "$right" ]]; then
     retval=1
+  else
+    log_failure "[Unhandled state]"
   fi
 
   echo "$retval"
 }
 
 compare_to_ignore_case() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local left right
+  left=$( echo "${1,,}" )
+  right=$( echo "${2,,}" )
+
+  local retval
+
+  if [[ "$left" < "$right" ]]; then
+    retval=-1
+  elif [[ "$left" == "$right" ]]; then
+    retval=0
+  else
+    retval=1
+  fi
+
+  echo "$retval"
 }
 
 concat() {

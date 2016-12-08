@@ -19,6 +19,21 @@ source "../lib/string.sh"
 
 log_header "Test string.sh"
 
+test_capitalize() {
+  log_header "Test capitalize"
+
+  local actual
+
+  actual=$( capitalize "apple pear" )
+  assert_eq "Apple pear" "$actual" "should be 'Apple pear'"
+  if [[ "$?" == 0 ]]; then
+    log_success "capitalize returns capitalized 'Apple pear'"
+  else
+    log_failure "char_at should return 'Apple pear'"
+  fi
+
+}
+
 test_char_at() {
   log_header "Test char_at"
 
@@ -83,9 +98,9 @@ test_compare_to() {
   actual=$( compare_to "apple pear" "beer" )
   assert_eq -1 "$actual" "should be -1"
   if [[ "$?" == 0 ]]; then
-    log_success "compare_to returns 1 if left gt right lexicographically"
+    log_success "compare_to returns -1 if left lt right lexicographically"
   else
-    log_failure "compare_to should return 1"
+    log_failure "compare_to should return -1"
   fi
 
   actual=$( compare_to "apple pear" "apple pear" )
@@ -104,19 +119,51 @@ test_compare_to() {
     log_failure "compare_to should return 1"
   fi
 
-  actual=$( compare_to "APple pear" "Apple pear" )
+  actual=$( compare_to "Apple pear" "APple pear" )
   assert_eq -1 "$actual" "should be -1"
   if [[ "$?" == 0 ]]; then
-    log_success "compare_to returns -1 if left gt right lexicographically (case sensitive)"
+    log_success "compare_to returns -1 if left lt right lexicographically (case sensitive)"
   else
-    log_failure "compare_to should return -1"
+    log_failure "compare_to should return -1 (case sensitive)"
+  fi
+
+  actual=$( compare_to "blueberry" "APPLE PEAR" )
+  assert_eq 1 "$actual" "should be 1"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to returns 1 if left gt right lexicographically (case sensitive)"
+  else
+    log_failure "compare_to should return 1 (case sensitive)"
   fi
 }
 
 test_compare_to_ignore_case() {
   log_header "Test compare_to_ignore_case"
 
-  log_warning "Pending tests"
+  local actual
+
+  actual=$( compare_to_ignore_case "apple pear" "beer" )
+  assert_eq -1 "$actual" "should be -1"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to_ignore_case returns 1 if left gt right"
+  else
+    log_failure "compare_to_ignore_case should return 1"
+  fi
+
+  actual=$( compare_to_ignore_case "APplE peAR" "apple pear" )
+  assert_eq 0 "$actual" "should be 0"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to_ignore_case returns 0 if two sides are equal"
+  else
+    log_failure "compare_to_ignore_case should return 0"
+  fi
+
+  actual=$( compare_to_ignore_case "APple pear" "apfel" )
+  assert_eq 1 "$actual" "should be 1"
+  if [[ "$?" == 0 ]]; then
+    log_success "compare_to_ignore_case returns 1 if left lt right"
+  else
+    log_failure "compare_to_ignore_case should return 1"
+  fi
 }
 
 test_concat() {
@@ -136,6 +183,7 @@ test_contains() {
 
 # test calls
 
+test_capitalize
 test_char_at
 test_compare_to
 test_compare_to_ignore_case
