@@ -277,7 +277,31 @@ test_index_of() {
 test_is_empty() {
   log_header "Test is_empty"
 
-  log_warning "Pending tests"
+  local actual
+
+  actual=$( is_empty "" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "is_empty returns true if the parameter string is empty and 0 length"
+  else
+    log_failure "is_empty should return true"
+  fi
+
+  actual=$( is_empty "apple" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "is_empty returns false if the parameter is a character string"
+  else
+    log_failure "is_empty should return false"
+  fi
+
+  actual=$( is_empty "\n" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "is_empty returns false if the parameter is a whitespace"
+  else
+    log_failure "is_empty should return false"
+  fi
 }
 
 
@@ -300,7 +324,7 @@ test_compare_to
 test_compare_to_ignore_case
 test_concat
 test_contains
-test_count
+# test_count
 test_ends_with
 test_equals
 test_equals_ignore_case
