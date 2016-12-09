@@ -219,7 +219,20 @@ index_of() {
 }
 
 is_empty() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+  local str
+  str="$1"
+
+  local retval
+  retval=false
+
+  if [[ -z "$str" ]]; then
+    retval=true
+  fi
+
+  echo "$retval"
 }
 
 join_fields() {
