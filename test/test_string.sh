@@ -232,28 +232,99 @@ test_count() {
   local actual
 
   actual=$( count "apple pear" "p" )
-  assert_eq 3 "$actual" "should be true"
+  assert_eq 3 "$actual" "should be 3"
   if [[ "$?" == 0 ]]; then
     log_success "count returns 3 if found three matches of characters"
   else
     log_failure "count should return 3"
   fi
 
-  log_warning "count returns 3 if found three matches of substrings"
-  log_warning "count returns 0 if no maching found"
-  log_warning "count returns 1 if the pattern matches the whole string"
+  actual=$( count "applea pear" "ea" )
+  assert_eq 2 "$actual" "should be 2"
+  if [[ "$?" == 0 ]]; then
+    log_success "count returns 2 if found two matches of substrings"
+  else
+    log_failure "count should return 2"
+  fi
+
+  actual=$( count "applea pear" "peach" )
+  assert_eq 0 "$actual" "should be 0"
+  if [[ "$?" == 0 ]]; then
+    log_success "count returns 0 if no maching found"
+  else
+    log_failure "count should return 0"
+  fi
+
+  actual=$( count "applea pear" "applea pear" )
+  assert_eq 1 "$actual" "should be 1"
+  if [[ "$?" == 0 ]]; then
+    log_success "count returns 1 if the pattern matches the whole string"
+  else
+    log_failure "count should return 1"
+  fi
+
 }
 
 test_ends_with() {
   log_header "Test ends_with"
 
-  log_warning "Pending tests"
+  local actual
+
+  actual=$( ends_with "apple" "le" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "ends_with returns true if pattern mathes with the end of the string"
+  else
+    log_failure "ends_with should return true"
+  fi
+
+  actual=$( ends_with "apple" "lea" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "ends_with returns false if no mathing found"
+  else
+    log_failure "ends_with should return false"
+  fi
+
+  actual=$( ends_with "apple" "" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "ends_with returns true if pattern is '' (empty) string"
+  else
+    log_failure "ends_with should return true"
+  fi
+
+  actual=$( ends_with "apple" "apple" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "ends_with returns true if pattern is same as the string"
+  else
+    log_failure "ends_with should return true"
+  fi
 }
 
 test_equals() {
   log_header "Test equals"
 
-  log_warning "Pending tests"
+  local actual
+
+  actual=$( equals "apple pear" "apple pear" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "equals returns true if the two sides are equivalent"
+  else
+    log_failure "equals should return true"
+  fi
+
+  actual=$( equals "apple pear" "apple" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "equals returns false if the two sides are not equivalent"
+  else
+    log_failure "equals should return false"
+  fi
+
+  log_warning "equals returns false if the two sides are not equivalent (case sensitive)"
 }
 
 test_equals_ignore_case() {
@@ -280,14 +351,54 @@ test_is_empty() {
   log_warning "Pending tests"
 }
 
+test_join_fields() {
+  log_header "Test join_fields"
 
+  log_warning "Pending tests"
+}
 
+test_last_index_of() {
+  log_header "Test last_index_of"
 
+  log_warning "Pending tests"
+}
 
+test_length() {
+  log_header "Test length"
 
+  log_warning "Pending tests"
+}
 
+test_matches() {
+  log_header "Test matches"
 
+  log_warning "Pending tests"
+}
 
+test_replace() {
+  log_header "Test replace"
+
+  log_warning "Pending tests"
+}
+
+test_replace_all() {
+  log_header "Test replace_all"
+
+  log_warning "Pending tests"
+}
+
+test_replace_first() {
+  log_header "Test replace_first"
+
+  log_warning "Pending tests"
+}
+
+test_starts_with() {
+ log_header "Test starts_with"
+
+ log_warning "Pending tests"
+
+}
 
 
 
@@ -307,3 +418,11 @@ test_equals_ignore_case
 test_format
 test_index_of
 test_is_empty
+test_join_fields
+test_last_index_of
+test_length
+test_matches
+test_replace
+test_replace_all
+test_replace_first
+test_starts_with

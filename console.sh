@@ -39,27 +39,27 @@ BOLD=$(tput bold)
 UNDERLINE=$(tput smul)
 
 log_header() {
-	printf "\n${BOLD}${MAGENTA}==========  %s  ==========${NORMAL}\n" "$@" >&2
+  printf "\n${BOLD}${MAGENTA}==========  %s  ==========${NORMAL}\n" "$@" >&2
 }
 
 log_success() {
-	printf "${GREEN}✔ %s${NORMAL}\n" "$@" >&2
+  printf "${GREEN}✔ %s${NORMAL}\n" "$@" >&2
 }
 
 log_failure() {
-	printf "${RED}✖ %s${NORMAL}\n" "$@" >&2
+  printf "${RED}✖ %s${NORMAL}\n" "$@" >&2
 }
 
 log_warning() {
-	printf "${YELLOW}➜ %s${NORMAL}\n" "$@" >&2
+  printf "${YELLOW}➜ %s${NORMAL}\n" "$@" >&2
 }
 
 log_info() {
-	printf "${UNDERLINE}${WHITE}Info:${NORMAL}  ${WHITE}%s${NORMAL}\n" "$@" >&2
+  printf "${UNDERLINE}${WHITE}Info:${NORMAL}  ${WHITE}%s${NORMAL}\n" "$@" >&2
 }
 
 log_debug() {
-	if [[ ! -z "$DEBUG" ]]; then
-		printf "${RED}DEBUG :: %s${NORMAL}\n" "$@" >&2
-	fi
+  if [[ ! -z "$DEBUG" ]]; then
+    printf "${RED}DEBUG :: %s${NORMAL}\n" "$@" >&2
+  fi
 }

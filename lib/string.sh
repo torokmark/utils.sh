@@ -87,8 +87,8 @@ compare_to_ignore_case() {
   [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
   local left right
-  left=$( echo "${1,,}" )
-  right=$( echo "${2,,}" )
+  left="${1,,}"
+  right="${2,,}"
 
   local retval
 
@@ -143,19 +143,63 @@ count() {
   str="$1"
   pattern="$2"
 
-  local res retval
-  res="${s%l%$pattern%g}"
-  log_info "$res"
-  retval="${#res}"
-  return "$retval"
+  local retval
+  local char_str char_pat
+  retval=0
+  if [[ "${#pattern}" -le "${#str}" ]]; then
+    for (( i=0; i<"${#str}"; i+=1 )); do
+      for (( j=0; j<"${#pattern}"; j+=1 )); do
+        char_str="${str:$i+$j:1}"
+        char_pat="${pattern:$j:1}"
+        if [[ ! "$char_str" == "$char_pat" ]]; then
+          continue 2 # ugly mish-mashing! TODO: fix it
+        fi
+      done
+      (( retval+=1 ))
+    done
+  else
+    retval=0
+  fi
+
+  echo "$retval"
 }
-count "apple" "p"
+
 ends_with() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local str pattern
+  str="$1"
+  pattern="$2"
+
+  local retval
+
+  if [[ "$str" == *"$pattern" ]]; then
+    retval=true
+  else
+    retval=false
+  fi
+
+  echo "$retval"
 }
 
 equals() {
-  :
+   # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local str pattern
+  str="$1"
+  pattern="$2"
+
+  local retval
+
+  if [[ "$str" == "$pattern" ]]; then
+    retval=true
+  else
+    retval=false
+  fi
+
+  echo "$retval"
 }
 
 equals_ignore_case() {
