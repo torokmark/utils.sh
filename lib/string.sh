@@ -203,7 +203,22 @@ equals() {
 }
 
 equals_ignore_case() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local str pattern
+  str="${1,,}"
+  pattern="${2,,}"
+
+  local retval
+
+  if [[ "$str" == "$pattern" ]]; then
+    retval=true
+  else
+    retval=false
+  fi
+
+  echo "$retval"
 }
 
 format() {
@@ -215,7 +230,22 @@ format() {
 ##   index_of "apple" "pl" -> 2
 ##   index_of "apple" "p" 2 -> 2
 index_of() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local str char
+  str="$1"
+  char="$2"
+
+  local retval
+  retval=false
+
+  local x
+  x="${1%%$2*}"
+  log_info "xxx :: $x"
+  [[ $x = $1 ]] && echo -1 || echo ${#x}
+
+  echo "$retval"
 }
 
 is_empty() {

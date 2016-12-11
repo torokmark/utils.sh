@@ -324,13 +324,43 @@ test_equals() {
     log_failure "equals should return false"
   fi
 
-  log_warning "equals returns false if the two sides are not equivalent (case sensitive)"
+  actual=$( equals "apple pear" "APple PEaR" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "equals returns false if the two sides are not equivalent (case sensitive)"
+  else
+    log_failure "equals should return false"
+  fi
 }
 
 test_equals_ignore_case() {
   log_header "Test equals_ignore_case"
 
-  log_warning "Pending tests"
+  local actual
+
+  actual=$( equals_ignore_case "apple pear" "apple pear" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "equals_ignore_case returns true if the two sides are equivalent"
+  else
+    log_failure "equals_ignore_case should return true"
+  fi
+
+  actual=$( equals_ignore_case "apple pear" "apple" )
+  assert_eq false "$actual" "should be false"
+  if [[ "$?" == 0 ]]; then
+    log_success "equals_ignore_case returns false if the two sides are not equivalent"
+  else
+    log_failure "equals_ignore_case should return false"
+  fi
+
+  actual=$( equals_ignore_case "apple pear" "APple PEaR" )
+  assert_eq true "$actual" "should be true"
+  if [[ "$?" == 0 ]]; then
+    log_success "equals_ignore_case returns true if the two sides are not equivalent (case sensitive)"
+  else
+    log_failure "equals_ignore_case should return true"
+  fi
 }
 
 test_format() {
