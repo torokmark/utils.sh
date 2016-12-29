@@ -19,7 +19,7 @@
 ##
 #####################################################################
 
-source "../console.sh"
+source "./console.sh"
 
 capitalize() {
   # pre-conditions:
