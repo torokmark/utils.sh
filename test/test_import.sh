@@ -2,11 +2,17 @@
 
 source "$IMPORT_HOME"
 
-import "$ROOT_DIR/test/import/test_import_shell.sh"
-import "/c/Users/tmark/test_import_home.sh"
-test_import_home_func
+#import "" # Error
 
+#import "./test/import/test_import_shell.sh"
+#test_import_shell_func
 
-import "$ROOT_DIR/test/import/import_recursive/*"
+#import "./test/import/directory/*"
+#test_import_directory_func
+#test_import_directory_second_func
 
-#import "$ROOT_DIR/"
+import "./test/import/directory/recursive/**"
+test_import_directory_recursive_one_depth_func
+test_import_directory_recursive_one_depth_second_func
+test_import_directory_recursive_two_depth_func
+test_import_directory_recursive_two_depth_second_func

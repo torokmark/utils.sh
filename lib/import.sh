@@ -19,10 +19,9 @@
 ##
 #####################################################################
 
-## +console.sh
+## console.sh
 ## /etc/lib/*
 ## /etc/lib/**
-## /etc/**/
 ## https://github.com/torokmark/shell_utils.git
 ## git://...
 param_processor() {
@@ -43,7 +42,7 @@ param_processor() {
   elif [[ "$path" == *".sh" ]]; then
     retval="shell"
   else
-    : # error
+    retval="error"
   fi
 
   echo "$retval"
@@ -57,15 +56,22 @@ import_shell() {
 
 import_directory() {
   local path="$1"
+  local location=
+  location="${path%/*}"
 
-  find "$path" -maxdepth 1 -type f -name "*.sh"
-
-  printf "directory directory_recursively\n" >&2
-
+  for f in `find "$location" -maxdepth 1 -type f -name "*.sh"`; do
+    source "$f"
+  done
 }
 
 import_directory_recursively() {
-  :
+  local path="$1"
+  local location=
+  location="${path%/*}"
+
+  for f in `find "$location" -type f -name "*.sh"`; do
+    source "$f"
+  done
 }
 
 import_git() {
@@ -107,6 +113,9 @@ import() {
       ;;
     "http")
       import_http "$path"
+      ;;
+    "error")
+      printf "error: not valid path"
       ;;
     *)
       ;;
