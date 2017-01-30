@@ -48,6 +48,14 @@ param_processor() {
   echo "$retval"
 }
 
+check_and_create_project_dir() {
+  local folder="$1"
+
+  if [ ! -d "$PROJECT_HOME/.dir/$folder" ]; then
+    mkdir -p "$PROJECT_HOME/.dir/$folder"
+  fi
+}
+
 import_shell() {
   local path="$1"
 
@@ -83,7 +91,15 @@ import_ftp() {
 }
 
 import_http() {
-  :
+  local url="$1"
+  local script_name=
+  script_name="${url##*/}"
+  script_name="$PROJECT_HOME/.dir/http/$script_name"
+
+  check_and_create_project_dir "http"
+  curl -s -o "$script_name" "$url" > /dev/null
+
+  source "$script_name"
 }
 
 
