@@ -17,5 +17,8 @@ source "$IMPORT_HOME"
 #test_import_directory_recursive_two_depth_func
 #test_import_directory_recursive_two_depth_second_func
 
-import "https://raw.githubusercontent.com/torokmark/shell_utils/master/test/import/http/test_import_http.sh"
-test_import_http_func
+#import "https://raw.githubusercontent.com/torokmark/shell_utils/master/test/import/http/test_import_http.sh"
+#test_import_http_func
+
+#import "ftp://localhost/shell_utils/master/test/import/ftp/test_import_ftp.sh"
+#test_import_ftp_func
