@@ -22,3 +22,6 @@ source "$IMPORT_HOME"
 
 #import "ftp://localhost/shell_utils/master/test/import/ftp/test_import_ftp.sh"
 #test_import_ftp_func
+
+import_relative "import/import_relative/test_import_relative.sh"
+test_import_relative_func

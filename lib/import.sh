@@ -19,6 +19,8 @@
 ##
 #####################################################################
 
+sourced="$_"
+
 ## console.sh
 ## /etc/lib/*
 ## /etc/lib/**
@@ -118,6 +120,24 @@ import_http() {
   else
     echo "Script not found!"
   fi
+}
+
+import_relative() {
+  [[ "$#" -lt 1 ]] && printf "[One param is required: Path]" && return 1
+
+  local path="$1"
+  local source_path
+
+  #[[ $called != $0 ]] && echo "Script is being sourced" || echo "Script is being run"
+  #echo "\$BASH_SOURCE ${BASH_SOURCE[@]}"
+
+  #echo "param : $path"
+  source_path="$( readlink -f ${BASH_SOURCE[1]} )"
+
+  #echo "source_path :: $source_path"
+  #echo "BASH_SOURCE :: ${BASH_SOURCE[1]}"
+  source "${source_path%/*}/$path"
+
 }
 
 
