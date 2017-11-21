@@ -266,7 +266,16 @@ is_empty() {
 }
 
 join_fields() {
-  :
+  [[ "$#" -lt 2 ]] && log_failure "[must be two or more params, where the separator between elements is the first param]" && return 1
+
+  local separator retval
+  separator="$1"
+  retval="$2"
+  shift
+  shift
+  for i; do retval="$retval$separator$i"; done
+
+  echo "$retval"
 }
 
 ## Example:
@@ -278,7 +287,15 @@ last_index_of() {
 }
 
 length() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+  local str="$1"
+  local retval
+
+  retval="${#str}"
+
+  echo "$retval"
 }
 
 matches() {
@@ -293,47 +310,157 @@ replace() {
 }
 
 replace_all() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+
+  local original_string string_to_replace_with retval
+  original_string="$1"
+  string_to_replace="$2"
+  string_to_replace_with="$3"
+  retval="${original_string//$string_to_replace/$string_to_replace_with}"
+
+  echo "$retval"
 }
 
 replace_first() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+
+  local original_string string_to_replace_with retval
+  original_string="$1"
+  string_to_replace="$2"
+  string_to_replace_with="$3"
+  retval="${original_string/$string_to_replace/$string_to_replace_with}"
+
+  echo "$retval"
 }
 
 ## Example:
 ##   -
 ##   -
 starts_with() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local str pattern retval
+  str="$1"
+  pattern="$2"
+  retval=false
+
+  [[ "$str" == "$pattern"* ]] && retval=true
+
+  echo "$retval"
 }
 
 strip() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two param]" && return 1
+
+  local str strip_char
+
+  str="$1"
+  strip_char="$2"
+
+  (
+    shopt -s extglob
+    str="${str##*($strip_char)}"
+    str="${str%%*($strip_char)}"
+
+    echo "${str}"
+  )
 }
 
 ## Example:
 ##   begindex
 ##   begindex, endindex
 substring() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two or three params]" && return 1
+
+  local str=$1
+  local retval
+
+  if [[  "$#" -eq 2 ]]; then
+    if [[ "$2" -le ${#str} ]]; then
+      retval=${str:$2}
+    else
+      log_failure "[begindex must be less than string length]" && return 1
+    fi
+  fi
+
+  if [[  "$#" -eq 3 ]]; then
+    if [[ "$2" -le $3 ]]; then
+      local substring_length
+      substring_length=$(( $3-$2 ))
+      retval=${str:$2:$substring_length}
+    else
+      log_failure "[begindex must be less than or equal to endindex]" && return 1
+    fi
+  fi
+
+  echo "$retval"
 }
 
 swapcase() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+  local retval
+  retval="${1~~}"
+
+  echo "$retval"
 }
 
 title() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+  local str=$1
+  local alpha="[[:alpha:]]"
+  local retval=$1
+
+  for (( i=0; i<${#str}; i++ )); do
+    if [[ ${str:$i:1} != $alpha &&  ${str:$(($i+1)):1} == $alpha ]]; then
+      local char_to_upper_case
+      char_to_upper_case=${str:$(($i+1)):1}
+      echo $char_to_upper_case
+      retval="${retval:0:$(($i+1))}${char_to_upper_case^^}${str:$(($i+2))}"
+    fi
+  done
+  retval="${retval[@]^}"
+  echo "$retval"
 }
 
 to_lower_case() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+  local retval
+  retval="${1,,}"
+
+  echo "$retval"
 }
 
 to_upper_case() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+  local retval
+  retval="${1^^}"
+
+  echo "$retval"
 }
 
 trim() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+  (
+    shopt -s extglob
+
+    local str="$1"
+    str="${str##*([[:space:]])}"
+    str="${str%%*([[:sapce:]])}"
+
+    echo "${str}"
+  )
 }
