@@ -354,7 +354,7 @@ starts_with() {
 
 strip() {
   # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two param]" && return 1
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
   local str strip_char
 
