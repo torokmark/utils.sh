@@ -6,7 +6,7 @@
 ##
 ## description:
 ## Map extension of shell (bash)
-##   with well-known function for string manipulation
+##   with well-known function for map manipulation
 ##
 ## author: Mihaly Csokas
 ##
