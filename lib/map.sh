@@ -8,6 +8,9 @@
 ## Map extension of shell (bash)
 ##   with well-known function for map manipulation
 ##
+## Preconditions:
+##   bash 4.3+
+##
 ## author: Mihaly Csokas
 ##
 ## date: 25. Dec. 2017
@@ -34,9 +37,8 @@ map() {
 
         add)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[add must be followed by three params]" && return 1
+            [[ "$#" -lt 2 ]] && log_failure "[add must be followed by three params]" && return 1
 
-            # works from bash 4.3
             declare -n map_name="$1"
             local key="$2"
             local value="$3"
@@ -64,7 +66,7 @@ map() {
 
         remove)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[remove must be followed by two params]" && return 1
+            [[ "$#" -lt 2 ]] && log_failure "[remove must be followed by two params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -75,7 +77,7 @@ map() {
 
         get)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[get must be followed by two params]" && return 1
+            [[ "$#" -lt 2 ]] && log_failure "[get must be followed by two params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -85,7 +87,7 @@ map() {
 
         set)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[set must be followed by three params]" && return 1
+            [[ "$#" -lt 3 ]] && log_failure "[set must be followed by three params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -112,6 +114,25 @@ map() {
 
             ;;
 
+        contains)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[contains must be followed by two params]" && return 1
+
+            declare -n map_name="$1"
+            local element="$2"
+            local retval="false"
+
+            for i in "${!map_name[@]}"
+            do
+              if [[ "$i" = "$element" ]]; then
+                retval="true"
+              fi
+            done
+
+
+            echo ${retval}
+
+            ;;
 
         "")
             map
@@ -121,7 +142,7 @@ map() {
             echo $"Usage: $0 { create | add "\
               "| remove | keys | values "\
               "| clear | size | get "\
-              "| set }"
+              "| set | contains }"
             exit 1
 
   esac
