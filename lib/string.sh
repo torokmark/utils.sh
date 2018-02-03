@@ -283,7 +283,19 @@ join_fields() {
 ##   last_index_of "apple" "pl" -> 2
 ##   last_index_of "apple" "p" 2 -> 0
 last_index_of() {
-  :
+  # pre-conditions:
+  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+  local str="$1"
+  local sub_str="$2"
+  local retval
+  local temp
+
+  temp=${str##*$sub_str}
+  retval=$(( ${#str} - ${#sub_str} - ${#temp}))
+
+  echo $retval
+
 }
 
 length() {
