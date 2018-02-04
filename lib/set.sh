@@ -8,9 +8,12 @@
 ## Set extension of shell (bash)
 ##   with well-known function for set manipulation
 ##
+<<<<<<< HEAD
 ## Preconditions:
 ##   bash 4.3+
 ##
+=======
+>>>>>>> 0b41569f53b443bfcb9d8c436970b163e91154c6
 ## author: Mihaly Csokas
 ##
 ## date: 03. Feb. 2018
