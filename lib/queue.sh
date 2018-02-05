@@ -36,7 +36,10 @@ queue() {
             # pre-conditions:
             [[ "$#" -lt 2 ]] && log_failure "[add must be followed by two params]" && return 1
 
-
+            declare -n queue_name="$1"
+            local value="$2"
+            #queue_name=( $value "${queue_name[@]}" )
+            queue_name+=( "$value" )
 
             ;;
 
@@ -58,11 +61,40 @@ queue() {
 
             ;;
 
+        last)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[next must be followed by one param]" && return 1
+
+            declare -n queue_name="$1"
+            local retval
+            #local last_index=$(( ${#queue_name[@]} - 1 ))
+            retval=${queue_name[0]}
+
+            echo "$retval"
+            ;;
+
         next)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[remove must be followed by two params]" && return 1
+            [[ "$#" -lt 1 ]] && log_failure "[next must be followed by one param]" && return 1
+
+            declare -n queue_name="$1"
+            local retval
+            #local last_index=$(( ${#queue_name[@]} - 1 ))
+            retval=${queue_name[0]}
+            queue_name=(${queue_name[@]:1})
+
+            echo "$retval"
+            ;;
 
 
+        empty)
+
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+
+            declare -n queue_name="$1"
+            local size="${#queue_name[@]}"
+            [[ $size -eq 0 ]] && echo "true" || echo "false"
 
             ;;
 
