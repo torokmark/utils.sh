@@ -21,458 +21,503 @@
 
 source "./console.sh"
 
-capitalize() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
-  local str="$1"
-
-  local retval
-  retval="${str^}"
-
-  echo "$retval"
-}
-
-## pre-condition:
-##   - number of params cannot be less than two
-##
-## params:
-##   - str: string : the string we investigate
-##   - pos: integer : the position in which the character sits
-## return:
-##   - retval: character : the character on the passed position
-char_at() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local str="$1"
-  local pos="$2"  # pos must be >= 0
-
-  if [[ "$pos" -lt 0 ]]; then
-    pos=${#str}
-  fi
-
-  local retval
-  retval=${str:pos:1}
-
-  echo "$retval"
-}
-
-# like sort method
-# Apple pear < APple peAr
-compare_to() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local left right
-  left="$1"
-  right="$2"
-
-  local retval
-
-  if [[ "$left" < "$right" ]]; then
-    retval=-1
-  elif [[ "$left" == "$right" ]]; then
-    retval=0
-  elif [[ "$left" > "$right" ]]; then
-    retval=1
-  else
-    log_failure "[Unhandled state]"
-  fi
-
-  echo "$retval"
-}
-
-compare_to_ignore_case() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local left right
-  left="${1,,}"
-  right="${2,,}"
-
-  local retval
-
-  if [[ "$left" < "$right" ]]; then
-    retval=-1
-  elif [[ "$left" == "$right" ]]; then
-    retval=0
-  else
-    retval=1
-  fi
-
-  echo "$retval"
-}
-
-concat() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local left right
-  left="$1"
-  right="$2"
-
-  local retval
-  retval+="$left$right"
-
-  echo "$retval"
-}
-
-contains() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local left right
-  left="$1"
-  right="$2"
-
-  local retval
-  retval=false
-
-  if [[ "$left" == *"$right"* ]]; then
-    retval=true
-  fi
-
-  echo "$retval"
-}
-
-count() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local str pattern
-  str="$1"
-  pattern="$2"
-
-  local retval
-  local char_str char_pat
-  retval=0
-  if [[ "${#pattern}" -le "${#str}" ]]; then
-    for (( i=0; i<"${#str}"; i+=1 )); do
-      for (( j=0; j<"${#pattern}"; j+=1 )); do
-        char_str="${str:$i+$j:1}"
-        char_pat="${pattern:$j:1}"
-        if [[ ! "$char_str" == "$char_pat" ]]; then
-          continue 2 # ugly mish-mashing! TODO: fix it
-        fi
-      done
-      (( retval+=1 ))
-    done
-  else
-    retval=0
-  fi
-
-  echo "$retval"
-}
-
-ends_with() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local str pattern
-  str="$1"
-  pattern="$2"
-
-  local retval
-
-  if [[ "$str" == *"$pattern" ]]; then
-    retval=true
-  else
-    retval=false
-  fi
-
-  echo "$retval"
-}
-
-equals() {
-   # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local str pattern
-  str="$1"
-  pattern="$2"
-
-  local retval
-
-  if [[ "$str" == "$pattern" ]]; then
-    retval=true
-  else
-    retval=false
-  fi
-
-  echo "$retval"
-}
-
-equals_ignore_case() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local str pattern
-  str="${1,,}"
-  pattern="${2,,}"
-
-  local retval
-
-  if [[ "$str" == "$pattern" ]]; then
-    retval=true
-  else
-    retval=false
-  fi
-
-  echo "$retval"
-}
-
-format() {
-  :
-}
-
-## Example:
-##   index_of "apple" "p" -> 1
-##   index_of "apple" "pl" -> 2
-##   index_of "apple" "p" 2 -> 2
-index_of() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
-
-  local str char
-  str="$1"
-  char="$2"
-
-  local retval
-  retval=false
-
-  local x
-  x="${1%%$2*}"
-  log_info "xxx :: $x"
-  [[ $x = $1 ]] && echo -1 || echo ${#x}
-
-  echo "$retval"
-}
-
-is_empty() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
-
-  local str
-  str="$1"
-
-  local retval
-  retval=false
-
-  if [[ -z "$str" ]]; then
-    retval=true
-  fi
-
-  echo "$retval"
-}
-
-join_fields() {
-  [[ "$#" -lt 2 ]] && log_failure "[must be two or more params, where the separator between elements is the first param]" && return 1
-
-  local separator retval
-  separator="$1"
-  retval="$2"
+string() {
+  local operation="$1"
   shift
-  shift
-  for i; do retval="$retval$separator$i"; done
 
-  echo "$retval"
-}
+  case "$operation" in
 
-## Example:
-##   last_index_of "apple" "p" -> 2
-##   last_index_of "apple" "pl" -> 2
-##   last_index_of "apple" "p" 2 -> 0
-last_index_of() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+       capitalize)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            local str="$1"
 
-  local str="$1"
-  local sub_str="$2"
-  local retval
-  local temp
+            local retval
+            retval="${str^}"
 
-  temp=${str##*$sub_str}
-  retval=$(( ${#str} - ${#sub_str} - ${#temp}))
+            echo "$retval"
 
-  echo $retval
+            ;;
 
-}
+        ## pre-condition:
+        ##   - number of params cannot be less than two
+        ##
+        ## params:
+        ##   - str: string : the string we investigate
+        ##   - pos: integer : the position in which the character sits
+        ## return:
+        ##   - retval: character : the character on the passed position
+        char_at)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-length() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            local str="$1"
+            local pos="$2"  # pos must be >= 0
 
-  local str="$1"
-  local retval
+            if [[ "$pos" -lt 0 ]]; then
+              pos=${#str}
+            fi
 
-  retval="${#str}"
+            local retval
+            retval=${str:pos:1}
 
-  echo "$retval"
-}
+            echo "$retval"
 
-matches() {
-  :
-}
+            ;;
 
-## Example:
-##   replace "apple" "p" "c" -> accle
-##   replace "apple" "pp" "c" -> acle
-replace() {
-  :
-}
+        # like sort method
+        # Apple pear < APple peAr
+        compare_to)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-replace_all() {
-  # pre-conditions:
-  [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+            local left right
+            left="$1"
+            right="$2"
 
-  local original_string string_to_replace_with retval
-  original_string="$1"
-  string_to_replace="$2"
-  string_to_replace_with="$3"
-  retval="${original_string//$string_to_replace/$string_to_replace_with}"
+            local retval
 
-  echo "$retval"
-}
+            if [[ "$left" < "$right" ]]; then
+              retval=-1
+            elif [[ "$left" == "$right" ]]; then
+              retval=0
+            elif [[ "$left" > "$right" ]]; then
+              retval=1
+            else
+              log_failure "[Unhandled state]"
+            fi
 
-replace_first() {
-  # pre-conditions:
-  [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+            echo "$retval"
 
-  local original_string string_to_replace_with retval
-  original_string="$1"
-  string_to_replace="$2"
-  string_to_replace_with="$3"
-  retval="${original_string/$string_to_replace/$string_to_replace_with}"
+            ;;
 
-  echo "$retval"
-}
+        compare_to_ignore_case)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-## Example:
-##   -
-##   -
-starts_with() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+            local left right
+            left="${1,,}"
+            right="${2,,}"
 
-  local str pattern retval
-  str="$1"
-  pattern="$2"
-  retval=false
+            local retval
 
-  [[ "$str" == "$pattern"* ]] && retval=true
+            if [[ "$left" < "$right" ]]; then
+              retval=-1
+            elif [[ "$left" == "$right" ]]; then
+              retval=0
+            else
+              retval=1
+            fi
 
-  echo "$retval"
-}
+            echo "$retval"
 
-strip() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+            ;;
 
-  local str strip_char
+        concat)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-  str="$1"
-  strip_char="$2"
+            local left right
+            left="$1"
+            right="$2"
 
-  (
-    shopt -s extglob
-    str="${str##*($strip_char)}"
-    str="${str%%*($strip_char)}"
+            local retval
+            retval+="$left$right"
 
-    echo "${str}"
-  )
-}
+            echo "$retval"
 
-## Example:
-##   begindex
-##   begindex, endindex
-substring() {
-  # pre-conditions:
-  [[ "$#" -lt 2 ]] && log_failure "[must be two or three params]" && return 1
+            ;;
 
-  local str=$1
-  local retval
+        contains)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-  if [[  "$#" -eq 2 ]]; then
-    if [[ "$2" -le ${#str} ]]; then
-      retval=${str:$2}
-    else
-      log_failure "[begindex must be less than string length]" && return 1
-    fi
-  fi
+            local left right
+            left="$1"
+            right="$2"
 
-  if [[  "$#" -eq 3 ]]; then
-    if [[ "$2" -le $3 ]]; then
-      local substring_length
-      substring_length=$(( $3-$2 ))
-      retval=${str:$2:$substring_length}
-    else
-      log_failure "[begindex must be less than or equal to endindex]" && return 1
-    fi
-  fi
+            local retval
+            retval=false
 
-  echo "$retval"
-}
+            if [[ "$left" == *"$right"* ]]; then
+              retval=true
+            fi
 
-swapcase() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            echo "$retval"
 
-  local retval
-  retval="${1~~}"
+            ;;
 
-  echo "$retval"
-}
+        count)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-title() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
-  local str=$1
-  local alpha="[[:alpha:]]"
-  local retval=$1
+            local str pattern
+            str="$1"
+            pattern="$2"
 
-  for (( i=0; i<${#str}; i++ )); do
-    if [[ ${str:$i:1} != $alpha &&  ${str:$(($i+1)):1} == $alpha ]]; then
-      local char_to_upper_case
-      char_to_upper_case=${str:$(($i+1)):1}
-      echo $char_to_upper_case
-      retval="${retval:0:$(($i+1))}${char_to_upper_case^^}${str:$(($i+2))}"
-    fi
-  done
-  retval="${retval[@]^}"
-  echo "$retval"
-}
+            local retval
+            local char_str char_pat
+            retval=0
+            if [[ "${#pattern}" -le "${#str}" ]]; then
+              for (( i=0; i<"${#str}"; i+=1 )); do
+                for (( j=0; j<"${#pattern}"; j+=1 )); do
+                  char_str="${str:$i+$j:1}"
+                  char_pat="${pattern:$j:1}"
+                  if [[ ! "$char_str" == "$char_pat" ]]; then
+                    continue 2 # ugly mish-mashing! TODO: fix it
+                  fi
+                done
+                (( retval+=1 ))
+              done
+            else
+              retval=0
+            fi
 
-to_lower_case() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            echo "$retval"
 
-  local retval
-  retval="${1,,}"
+            ;;
 
-  echo "$retval"
-}
+        ends_with)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-to_upper_case() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            local str pattern
+            str="$1"
+            pattern="$2"
 
-  local retval
-  retval="${1^^}"
+            local retval
 
-  echo "$retval"
-}
+            if [[ "$str" == *"$pattern" ]]; then
+              retval=true
+            else
+              retval=false
+            fi
 
-trim() {
-  # pre-conditions:
-  [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            echo "$retval"
 
-  (
-    shopt -s extglob
+            ;;
 
-    local str="$1"
-    str="${str##*([[:space:]])}"
-    str="${str%%*([[:sapce:]])}"
+        equals)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-    echo "${str}"
-  )
+            local str pattern
+            str="$1"
+            pattern="$2"
+
+            local retval
+
+            if [[ "$str" == "$pattern" ]]; then
+              retval=true
+            else
+              retval=false
+            fi
+
+            echo "$retval"
+
+            ;;
+
+        equals_ignore_case)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+            local str pattern
+            str="${1,,}"
+            pattern="${2,,}"
+
+            local retval
+
+            if [[ "$str" == "$pattern" ]]; then
+              retval=true
+            else
+              retval=false
+            fi
+
+            echo "$retval"
+
+            ;;
+
+        format)
+            :
+            ;;
+
+        ## Example:
+        ##   index_of "apple" "p" -> 1
+        ##   index_of "apple" "pl" -> 2
+        ##   index_of "apple" "p" 2 -> 2
+        index_of)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+            local str char
+            str="$1"
+            char="$2"
+
+            local retval
+            retval=false
+
+            local x
+            x="${1%%$2*}"
+            log_info "xxx :: $x"
+            [[ $x = $1 ]] && echo -1 || echo ${#x}
+
+            echo "$retval"
+
+            ;;
+
+        is_empty)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+            local str
+            str="$1"
+
+            local retval
+            retval=false
+
+            if [[ -z "$str" ]]; then
+              retval=true
+            fi
+
+            echo "$retval"
+
+            ;;
+
+        join_fields)
+            [[ "$#" -lt 2 ]] && log_failure "[must be two or more params, where the separator between elements is the first param]" && return 1
+
+            local separator retval
+            separator="$1"
+            retval="$2"
+            shift
+            shift
+            for i; do retval="$retval$separator$i"; done
+
+            echo "$retval"
+
+            ;;
+
+        ## Example:
+        ##   last_index_of "apple" "p" -> 2
+        ##   last_index_of "apple" "pl" -> 2
+        ##   last_index_of "apple" "p" 2 -> 0
+        last_index_of)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+            local str="$1"
+            local sub_str="$2"
+            local retval
+            local temp
+
+            temp=${str##*$sub_str}
+            retval=$(( ${#str} - ${#sub_str} - ${#temp}))
+
+            echo $retval
+
+            ;;
+
+        length)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+            local str="$1"
+            local retval
+
+            retval="${#str}"
+
+            echo "$retval"
+            ;;
+
+        matches)
+            :
+            ;;
+
+        ## Example:
+        ##   replace "apple" "p" "c" -> accle
+        ##   replace "apple" "pp" "c" -> acle
+        replace)
+            :
+            ;;
+
+        replace_all)
+            # pre-conditions:
+            [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+
+            local original_string string_to_replace_with retval
+            original_string="$1"
+            string_to_replace="$2"
+            string_to_replace_with="$3"
+            retval="${original_string//$string_to_replace/$string_to_replace_with}"
+
+            echo "$retval"
+
+            ;;
+
+        replace_first)
+            # pre-conditions:
+            [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+
+            local original_string string_to_replace_with retval
+            original_string="$1"
+            string_to_replace="$2"
+            string_to_replace_with="$3"
+            retval="${original_string/$string_to_replace/$string_to_replace_with}"
+
+            echo "$retval"
+
+            ;;
+
+        ## Example:
+        ##   -
+        ##   -
+        starts_with)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+            local str pattern retval
+            str="$1"
+            pattern="$2"
+            retval=false
+
+            [[ "$str" == "$pattern"* ]] && retval=true
+
+            echo "$retval"
+
+            ;;
+
+        strip)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
+
+            local str strip_char
+
+            str="$1"
+            strip_char="$2"
+
+            (
+            shopt -s extglob
+            str="${str##*($strip_char)}"
+            str="${str%%*($strip_char)}"
+
+            echo "${str}"
+            )
+
+            ;;
+
+        ## Example:
+        ##   begindex
+        ##   begindex, endindex
+        substring)
+            # pre-conditions:
+            [[ "$#" -lt 2 ]] && log_failure "[must be two or three params]" && return 1
+
+            local str=$1
+            local retval
+
+            if [[  "$#" -eq 2 ]]; then
+              if [[ "$2" -le ${#str} ]]; then
+                retval=${str:$2}
+              else
+                log_failure "[begindex must be less than string length]" && return 1
+              fi
+            fi
+
+            if [[  "$#" -eq 3 ]]; then
+              if [[ "$2" -le $3 ]]; then
+                local substring_length
+                substring_length=$(( $3-$2 ))
+                retval=${str:$2:$substring_length}
+              else
+                log_failure "[begindex must be less than or equal to endindex]" && return 1
+              fi
+            fi
+
+            echo "$retval"
+
+            ;;
+
+        swapcase)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+            local retval
+            retval="${1~~}"
+
+            echo "$retval"
+
+            ;;
+
+        title)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+            local str=$1
+            local alpha="[[:alpha:]]"
+            local retval=$1
+
+            for (( i=0; i<${#str}; i++ )); do
+              if [[ ${str:$i:1} != $alpha &&  ${str:$(($i+1)):1} == $alpha ]]; then
+                local char_to_upper_case
+                char_to_upper_case=${str:$(($i+1)):1}
+                retval="${retval:0:$(($i+1))}${char_to_upper_case^^}${str:$(($i+2))}"
+              fi
+            done
+            retval="${retval[@]^}"
+            echo "$retval"
+
+            ;;
+
+        to_lower_case)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+            local retval
+            retval="${1,,}"
+
+            echo "$retval"
+
+            ;;
+
+        to_upper_case)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+            local retval
+            retval="${1^^}"
+
+            echo "$retval"
+
+            ;;
+
+        trim)
+            # pre-conditions:
+            [[ "$#" -lt 1 ]] && log_failure "[must be one param]" && return 1
+
+            (
+            shopt -s extglob
+
+            local str="$1"
+            str="${str##*([[:space:]])}"
+            str="${str%%*([[:space:]])}"
+
+            echo "${str}"
+            )
+
+            ;;
+
+        *)
+            echo $"Usage: $0 { "\
+                " capitalize | char_at | compare_to "\
+                "| compare_to_ignore_case | concat "\
+                "| contains | count | ends_with | equals "\
+                "| equals_ignore_case | format | index_of "\
+                "| is_empty | join_fields | last_index_of "\
+                "| length | matches | replace | replace_all "\
+                "| replace_first | starts_with | strip | substring "\
+                "| swapcase | title | to_lower_case "\
+                "| to_upper_case | trim }"
+            exit 1
+
+esac
+
 }
