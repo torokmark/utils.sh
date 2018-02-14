@@ -67,7 +67,7 @@ stack() {
             declare -n stack_name="$1"
             local retval
             local last_index=$(( ${#stack_name[@]} - 1 ))
-            retval=${stack_name[$last_index]}
+            retval="${stack_name[$last_index]}"
             unset stack_name["$last_index"]
 
             echo "$retval"
@@ -80,7 +80,7 @@ stack() {
             declare -n stack_name="$1"
             local retval
             local last_index=$(( ${#stack_name[@]} - 1 ))
-            retval=${stack_name[$last_index]}
+            retval="${stack_name[$last_index]}"
 
             echo "$retval"
             ;;
