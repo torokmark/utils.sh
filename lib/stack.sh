@@ -65,12 +65,13 @@ stack() {
             [[ "$#" -lt 1 ]] && log_failure "[pop must be followed by one param]" && return 1
 
             declare -n stack_name="$1"
-            local retval
-            local last_index=$(( ${#stack_name[@]} - 1 ))
-            retval="${stack_name[$last_index]}"
-            unset stack_name["$last_index"]
 
-            echo "$retval"
+            local last_index
+            if [[ ${#stack_name[@]} -gt 0 ]]; then
+              last_index=$(( ${#stack_name[@]} - 1 ))
+              unset stack_name["$last_index"]
+            fi
+
             ;;
 
         top)
@@ -79,9 +80,11 @@ stack() {
 
             declare -n stack_name="$1"
             local retval
-            local last_index=$(( ${#stack_name[@]} - 1 ))
-            retval="${stack_name[$last_index]}"
-
+            if [[ ${#stack_name[@]} -gt 0 ]]; then
+              local last_index=$(( ${#stack_name[@]} - 1 ))
+              retval="${stack_name[$last_index]}"
+            fi
+            
             echo "$retval"
             ;;
 
