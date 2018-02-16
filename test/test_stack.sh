@@ -130,7 +130,7 @@ test_stack()(
       log_failure "size should return false"
     fi
 
-    stack pop "fruits" &>/dev/null
+    stack pop "fruits"
 
     actual=$(stack empty fruits)
     assert_eq 'true' "$actual" 'should be true'
@@ -153,28 +153,30 @@ test_stack()(
 
     local actual
 
+    stack pop "fruits"
+    actual=$(stack top "fruits")
 
-    actual=$(stack pop "fruits")
-    stack pop "fruits" &>/dev/null
-    assert_eq "peach" "$actual" "should be peach"
+    assert_eq "pear" "$actual" "should be pear"
     if [[ "$?" == 0 ]]; then
       log_success "pop peach from 'fruits'"
     else
       log_failure "pop should remove peach from fruits"
     fi
 
-    actual=$(stack pop "fruits")
-    stack pop "fruits" &>/dev/null
-    assert_eq "pear" "$actual" "should be pear"
+    stack pop "fruits"
+    actual=$(stack top "fruits")
+
+    assert_eq "apple" "$actual" "should be apple"
     if [[ "$?" == 0 ]]; then
-      log_success "pop pear pear from 'fruits'"
+      log_success "pop pear from 'fruits'"
     else
       log_failure "pop should remove pear from fruits"
     fi
 
-    actual=$(stack pop "fruits")
-    stack pop "fruits" &>/dev/null
-    assert_eq "apple" "$actual" "should be apple"
+    stack pop "fruits"
+    actual=$(stack top "fruits")
+
+    assert_eq "" "$actual" 'should be ""'
     if [[ "$?" == 0 ]]; then
       log_success "pop apple from 'fruits'"
     else
