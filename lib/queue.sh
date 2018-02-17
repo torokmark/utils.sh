@@ -25,16 +25,18 @@ queue() {
 
         create)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[create must be followed by one param]" && return 1
 
             queue_name="$1"
             declare -ga "$queue_name"
 
                 ;;
 
-        add)
+        enqueue)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[add must be followed by two params]" && return 1
+            #[[ "$#" -lt 2 ]] && log_failure "[add must be followed by two params]" && return 1
+            [[ "$#" -ne 2 ]] && log_failure "[enqueue must be followed by two params]" && return 1
 
             declare -n queue_name="$1"
             local value="$2"
@@ -45,7 +47,8 @@ queue() {
 
         clear)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[clear must be followed by one param]" && return 1
 
             unset $1
             declare -ga "$1"
@@ -54,43 +57,44 @@ queue() {
 
         size)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[size must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[size must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[size must be followed by one param]" && return 1
 
             declare -n queue_name="$1"
             echo ${#queue_name[@]}
 
             ;;
 
-        last)
+        peek)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[next must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[next must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[next must be followed by one param]" && return 1
 
             declare -n queue_name="$1"
             local retval
-            #local last_index=$(( ${#queue_name[@]} - 1 ))
+
             retval=${queue_name[0]}
 
             echo "$retval"
             ;;
 
-        next)
+        dequeue)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[next must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[next must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[dequeue must be followed by one param]" && return 1
 
             declare -n queue_name="$1"
             local retval
-            #local last_index=$(( ${#queue_name[@]} - 1 ))
-            retval=${queue_name[0]}
             queue_name=(${queue_name[@]:1})
 
-            echo "$retval"
             ;;
 
 
         empty)
 
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
 
             declare -n queue_name="$1"
             local size="${#queue_name[@]}"
@@ -100,8 +104,9 @@ queue() {
 
 
         *)
-            echo $"Usage: $0 { create | add "\
-              " | remove | elements | clear "\
+            echo $"Usage: $0 { create | enqueue "\
+              " | dequeue | peek | clear "\
+              " | size | emptz "\
               "}"
             exit 1
 
