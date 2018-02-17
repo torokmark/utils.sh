@@ -29,7 +29,8 @@ map() {
 
         create)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[create must be followed by one param]" && return 1
 
             map_name="$1"
             declare -gA "$map_name"
@@ -37,7 +38,8 @@ map() {
 
         add)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[add must be followed by three params]" && return 1
+            #[[ "$#" -lt 2 ]] && log_failure "[add must be followed by three params]" && return 1
+            [[ "$#" -ne 2 ]] && log_failure "[add must be followed by three params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -48,7 +50,8 @@ map() {
 
         clear)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[clear must be followed by one param]" && return 1
 
             unset $1
             declare -gA "$1"
@@ -57,7 +60,8 @@ map() {
 
         size)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[size must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[size must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[size must be followed by one param]" && return 1
 
             declare -n map_name="$1"
             echo ${#map_name[@]}
@@ -66,7 +70,8 @@ map() {
 
         remove)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[remove must be followed by two params]" && return 1
+            #[[ "$#" -lt 2 ]] && log_failure "[remove must be followed by two params]" && return 1
+            [[ "$#" -ne 2 ]] && log_failure "[remove must be followed by two params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -77,7 +82,8 @@ map() {
 
         get)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[get must be followed by two params]" && return 1
+            #[[ "$#" -lt 2 ]] && log_failure "[get must be followed by two params]" && return 1
+            [[ "$#" -ne 2 ]] && log_failure "[get must be followed by two params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -87,7 +93,8 @@ map() {
 
         set)
             # pre-conditions:
-            [[ "$#" -lt 3 ]] && log_failure "[set must be followed by three params]" && return 1
+            #[[ "$#" -lt 3 ]] && log_failure "[set must be followed by three params]" && return 1
+            [[ "$#" -ne 3 ]] && log_failure "[set must be followed by three params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
@@ -98,7 +105,8 @@ map() {
 
         keys)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[keys must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[keys must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[keys must be followed by one param]" && return 1
 
             declare -n map_name="$1"
             echo ${!map_name[@]}
@@ -107,7 +115,8 @@ map() {
 
         values)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[values must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[values must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[values must be followed by one param]" && return 1
 
             declare -n map_name="$1"
             echo ${map_name[@]}
@@ -116,7 +125,8 @@ map() {
 
         contains)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[contains must be followed by two params]" && return 1
+            #[[ "$#" -lt 2 ]] && log_failure "[contains must be followed by two params]" && return 1
+            [[ "$#" -ne 2 ]] && log_failure "[contains must be followed by two params]" && return 1
 
             declare -n map_name="$1"
             local element="$2"
@@ -134,15 +144,23 @@ map() {
 
             ;;
 
-        "")
-            map
+        empty)
+
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+
+            declare -n map_name="$1"
+            local size="${#map_name[@]}"
+            [[ $size -eq 0 ]] && echo "true" || echo "false"
+
             ;;
 
         *)
             echo $"Usage: $0 { create | add "\
               "| remove | keys | values "\
               "| clear | size | get "\
-              "| set | contains }"
+              "| set | contains | empty }"
             exit 1
 
   esac
