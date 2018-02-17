@@ -25,7 +25,8 @@ stack() {
 
         create)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[create must be followed by one param]" && return 1
 
             stack_name="$1"
             declare -ga "$stack_name"
@@ -34,7 +35,8 @@ stack() {
 
         push)
             # pre-conditions:
-            [[ "$#" -lt 2 ]] && log_failure "[push must be followed by two params]" && return 1
+            #[[ "$#" -lt 2 ]] && log_failure "[push must be followed by two params]" && return 1
+            [[ "$#" -ne 2 ]] && log_failure "[push must be followed by two params]" && return 1
 
             declare -n stack_name="$1"
             local value="$2"
@@ -44,7 +46,8 @@ stack() {
 
         clear)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[clear must be followed by one param]" && return 1
 
             unset $1
             declare -ga "$1"
@@ -53,7 +56,8 @@ stack() {
 
         size)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[size must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[size must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[size must be followed by one param]" && return 1
 
             declare -n stack_name="$1"
             echo "${#stack_name[@]}"
@@ -62,7 +66,8 @@ stack() {
 
         pop)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[pop must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[pop must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[pop must be followed by one param]" && return 1
 
             declare -n stack_name="$1"
 
@@ -76,7 +81,8 @@ stack() {
 
         top)
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[top must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[top must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[top must be followed by one param]" && return 1
 
             declare -n stack_name="$1"
             local retval
@@ -84,14 +90,15 @@ stack() {
               local last_index=$(( ${#stack_name[@]} - 1 ))
               retval="${stack_name[$last_index]}"
             fi
-            
+
             echo "$retval"
             ;;
 
         empty)
 
             # pre-conditions:
-            [[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
 
             declare -n stack_name="$1"
             local size="${#stack_name[@]}"

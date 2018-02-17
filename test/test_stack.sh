@@ -86,9 +86,9 @@ test_stack()(
     actual=$(stack size fruits)
     assert_eq '0' "$actual" 'should be 0'
     if [[ "$?" == 0 ]]; then
-      log_success "fruits size is 3"
+      log_success "fruits size is 0"
     else
-      log_failure "size should return 3"
+      log_failure "size should return 0"
     fi
 
     stack push "fruits" "apple"
@@ -127,7 +127,7 @@ test_stack()(
     if [[ "$?" == 0 ]]; then
       log_success "fruits is not empty"
     else
-      log_failure "size should return false"
+      log_failure "empty should return false"
     fi
 
     stack pop "fruits"
@@ -137,7 +137,7 @@ test_stack()(
     if [[ "$?" == 0 ]]; then
       log_success "fruits after pop is empty"
     else
-      log_failure "size should return true"
+      log_failure "empty should return true"
     fi
 
     unset fruits
@@ -204,12 +204,13 @@ test_stack()(
       log_failure "top should retur peach"
     fi
 
+    stack pop fruits
     actual=$(stack top fruits)
-    assert_eq 'peach' "$actual" 'should be peach'
+    assert_eq 'pear' "$actual" 'should be pear'
     if [[ "$?" == 0 ]]; then
-      log_success "top element is peach"
+      log_success "top element is pear"
     else
-      log_failure "top should retur peach"
+      log_failure "top should retur pear"
     fi
 
     unset fruits
