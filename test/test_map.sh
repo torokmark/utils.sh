@@ -229,7 +229,6 @@ test_map()(
     map add "fruits" "apple" "1"
     map add "fruits" "pear" "12"
     map add "fruits" "peach" "21"
-<<<<<<< HEAD
     local actual=true
 
     for i in apple pear peach; do
@@ -279,21 +278,6 @@ test_map()(
     fi
 
     unset fruits
-=======
-    local actual
-
-    #for i in "$(map keys fruits)"; do
-    #  echo $i
-    #done
-    actual=$( map keys fruits )
-    #assert_eq "1 12 21" "$actual" 'should be 1 12 21'
-    assert_eq "apple pear peach" "$actual" 'should be apple pear peach'
-    if [[ "$?" == 0 ]]; then
-      log_success "map 'fruits' contains apple, pear, peach keys"
-    else
-      log_failure "map should contains  apple, pear, peach keys"
-    fi
->>>>>>> 0b9e42ebbaceef168ca41371f81ae0063b700dea
   }
 
   test_contains(){
@@ -305,7 +289,6 @@ test_map()(
     map add "fruits" "peach" "21"
     local actual
 
-<<<<<<< HEAD
     for i in $(map keys fruits); do
       actual=$( map contains fruits "$i" )
       assert_true "true" "$actual" 'should be true'
@@ -317,15 +300,6 @@ test_map()(
       fi
     done
     unset fruits
-=======
-    assert_eq "true" "$actual" 'should be true'
-    for i in
-      if [[ "$?" == 0 ]]; then
-        log_success "added apple to map 'fruits'"
-      else
-        log_failure "add should add apple to fruits"
-      fi
->>>>>>> 0b9e42ebbaceef168ca41371f81ae0063b700dea
   }
 
 
@@ -338,13 +312,8 @@ test_map()(
   test_remove
   test_clear
   test_size
-<<<<<<< HEAD
   test_keys
   test_values
-=======
-  #test_keys
-  # test_values
->>>>>>> 0b9e42ebbaceef168ca41371f81ae0063b700dea
   test_contains
   test_empty
 
