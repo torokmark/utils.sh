@@ -39,7 +39,7 @@ map() {
         add)
             # pre-conditions:
             #[[ "$#" -lt 2 ]] && log_failure "[add must be followed by three params]" && return 1
-            [[ "$#" -ne 2 ]] && log_failure "[add must be followed by three params]" && return 1
+            [[ "$#" -ne 3 ]] && log_failure "[add must be followed by three params]" && return 1
 
             declare -n map_name="$1"
             local key="$2"
