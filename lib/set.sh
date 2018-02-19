@@ -21,7 +21,7 @@
 
 source "./console.sh"
 
-set_structure() {
+set_collection() {
   local operation="$1"
   shift
 
@@ -42,7 +42,7 @@ set_structure() {
 
             declare -n set_name="$1"
             local key="$2"
-            local value=" "
+            local value=""
             set_name+=( ["$key"]="$value" )
 
             ;;
@@ -110,16 +110,18 @@ set_structure() {
 
             declare -n first_set="$1"
             declare -n second_set="$2"
+
+            [[ ! -v $3 ]] && set_collection create $3
             declare -n union_set="$3"
 
             for i in "${!first_set[@]}"
             do
-              set_structure add union_set "$i"
+              set_collection add union_set "$i"
             done
 
             for i in "${!second_set[@]}"
             do
-              set_structure add union_set "$i"
+              set_collection add union_set "$i"
             done
 
             ;;
@@ -130,14 +132,16 @@ set_structure() {
 
             declare -n first_set="$1"
             declare -n second_set="$2"
+
+            [[ ! -v $3 ]] && set_collection create $3
             declare -n intersection_set="$3"
             local contains="false"
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_structure contains second_set "$i" )
+              contains=$( set_collection contains second_set "$i" )
               if [[ $contains = "true" ]]; then
-                set_structure add intersection_set "$i"
+                set_collection add intersection_set "$i"
               fi
             done
 
@@ -149,14 +153,16 @@ set_structure() {
 
             declare -n first_set="$1"
             declare -n second_set="$2"
+
+            [[ ! -v $3 ]] && set_collection create $3
             declare -n difference_set="$3"
             local contains="false"
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_structure contains second_set "$i" )
+              contains=$( set_collection contains second_set "$i" )
               if [[ $contains = "false" ]]; then
-                set_structure add difference_set "$i"
+                set_collection add difference_set "$i"
               fi
             done
 
@@ -174,7 +180,7 @@ set_structure() {
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_structure contains second_set "$i" )
+              contains=$( set_collection contains second_set "$i" )
               if [[ $contains = "false" ]]; then
                 equals="false"
               fi
@@ -198,7 +204,7 @@ set_structure() {
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_structure contains second_set "$i" )
+              contains=$( set_collection contains second_set "$i" )
               if [[ $contains = "false" ]]; then
                 subset="false"
               fi
@@ -207,15 +213,24 @@ set_structure() {
             echo "$subset"
             ;;
 
-        "")
-            set
+          empty)
+
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
+
+            declare -n map_name="$1"
+            local size="${#map_name[@]}"
+            [[ $size -eq 0 ]] && echo "true" || echo "false"
+
             ;;
 
         *)
             echo $"Usage: $0 { create | add "\
               "| remove | elements | clear "\
-              "| size | intersection | difference "\
-              "| subset | equal }"
+              "| size | union | intersection "\
+              "| difference | subset | equal "\
+              "| empty }"
             exit 1
 
   esac
