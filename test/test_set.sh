@@ -41,7 +41,11 @@ test_set()(
     log_header "Test add"
 
     set_collection create "fruits"
+<<<<<<< HEAD
     set_collection add "fruits" "apple"
+=======
+    set_collection add "fruits" "apple" "1"
+>>>>>>> 4de7e9c9ea1c33ae9df8141488428652048cbfd2
     local actual
 
     actual=$(set_collection contains fruits apple)
@@ -57,9 +61,15 @@ test_set()(
     log_header "Test remove"
 
     set_collection create "fruits"
+<<<<<<< HEAD
     set_collection add "fruits" "apple"
     set_collection add "fruits" "pear"
     set_collection add "fruits" "peach"
+=======
+    set_collection add "fruits" "apple" "1"
+    set_collection add "fruits" "pear" "12"
+    set_collection add "fruits" "peach" "21"
+>>>>>>> 4de7e9c9ea1c33ae9df8141488428652048cbfd2
     local actual
 
 
@@ -97,9 +107,15 @@ test_set()(
       log_failure "size should return 0"
     fi
 
+<<<<<<< HEAD
     set_collection add "fruits" "apple"
     set_collection add "fruits" "pear"
     set_collection add "fruits" "peach"
+=======
+    set_collection add "fruits" "apple" "1"
+    set_collection add "fruits" "pear" "12"
+    set_collection add "fruits" "peach" "21"
+>>>>>>> 4de7e9c9ea1c33ae9df8141488428652048cbfd2
 
     actual=$(set_collection size fruits)
     assert_eq '3' "$actual" 'should be 3'
@@ -126,7 +142,11 @@ test_set()(
       log_failure "empty should return true"
     fi
 
+<<<<<<< HEAD
     set_collection add "fruits" "apple"
+=======
+    set_collection add "fruits" "apple" "1"
+>>>>>>> 4de7e9c9ea1c33ae9df8141488428652048cbfd2
 
     actual=$(set_collection empty fruits)
     assert_eq 'false' "$actual" 'should be false'
@@ -165,9 +185,15 @@ test_set()(
     fi
 
     set_collection create "fruits"
+<<<<<<< HEAD
     set_collection add "fruits" "apple"
     set_collection add "fruits" "pear"
     set_collection add "fruits" "peach"
+=======
+    set_collection add "fruits" "apple" "1"
+    set_collection add "fruits" "pear" "12"
+    set_collection add "fruits" "peach" "21"
+>>>>>>> 4de7e9c9ea1c33ae9df8141488428652048cbfd2
     set_collection clear "fruits"
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
