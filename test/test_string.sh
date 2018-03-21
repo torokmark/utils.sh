@@ -5,9 +5,9 @@
 ## description:
 ## Tests for the string extension
 ##
-## author: Mark Torok
+## author: Mihaly Csokas
 ##
-## date: 07. Dec. 2016
+## date: 07. Dec. 2017
 ##
 ## license: MIT
 ##
@@ -80,15 +80,6 @@ test_string()(
       log_failure "char_at should return ''"
     fi
 
-    : '
-    char_at "apple pear"
-    assert_eq "1" "$?" "Should be 1"
-    if [[ "$?" == 0 ]]; then
-      log_success "char_at exits when num of params less than two"
-    else
-      log_failure "char_at should return 1"
-    fi
-    '
   }
 
   test_compare_to() {
@@ -364,16 +355,36 @@ test_string()(
     fi
   }
 
-  test_format() {
-    log_header "Test format"
-
-    log_warning "Pending tests"
-  }
 
   test_index_of() {
     log_header "Test index_of"
 
-    log_warning "Pending tests"
+    local actual
+
+    actual=$( string index_of "apple" "p" )
+    assert_eq 1 "$actual" "should be 1"
+    if [[ "$?" == 0 ]]; then
+      log_success "index_of returns 1, the index of the first p in apple"
+    else
+      log_failure "index_of should return 1"
+    fi
+
+    actual=$( string index_of "apple" "le" )
+    assert_eq 3 "$actual" "should be 3"
+    if [[ "$?" == 0 ]]; then
+      log_success "index_of returns 3, the index of the \"le\" in apple"
+    else
+      log_failure "index_of should return 3"
+    fi
+
+    actual=$( string index_of "applele" "le" )
+    assert_eq 3 "$actual" "should be 3"
+    if [[ "$?" == 0 ]]; then
+      log_success "index_of returns 3, the index of the \"le\" in apple"
+    else
+      log_failure "index_of should return 3"
+    fi
+
   }
 
   test_is_empty() {
@@ -462,11 +473,6 @@ test_string()(
     log_warning "Pending tests"
   }
 
-  test_replace() {
-    log_header "Test replace"
-
-    log_warning "Pending tests"
-  }
 
   test_replace_all() {
     log_header "Test replace_all"
@@ -483,17 +489,17 @@ test_string()(
 
   }
 
-  test_replace_first() {
-    log_header "Test replace_first"
+  test_replace() {
+    log_header "Test replace"
 
     local actual
 
-    actual=$( string replace_first "apple" "p" "eee" )
+    actual=$( string replace "apple" "p" "eee" )
     assert_eq "aeeeple" "$actual" "should be aeeeple"
     if [[ "$?" == 0 ]]; then
-      log_success "replace_first replace first p to eee, output should be aeeeple"
+      log_success "replace replace first p to eee, output should be aeeeple"
     else
-      log_failure "replace_first should return aeeeple"
+      log_failure "replace should return aeeeple"
     fi
   }
 
@@ -633,20 +639,17 @@ test_string()(
   test_compare_to_ignore_case
   test_concat
   test_contains
-  # test_count
+  test_count
   test_ends_with
   test_equals
   test_equals_ignore_case
-  test_format
   test_index_of
   test_is_empty
   test_join_fields
   test_last_index_of
   test_length
-  test_matches
   test_replace
   test_replace_all
-  test_replace_first
   test_starts_with
   test_stip
   test_substring
