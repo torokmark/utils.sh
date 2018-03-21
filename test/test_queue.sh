@@ -25,7 +25,7 @@ test_queue()(
 
     local actual
 
-    queue create "fruits"
+    queue create fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
@@ -42,9 +42,9 @@ test_queue()(
 
     local actual
 
-    queue create "fruits"
+    queue create fruits
 
-    queue enqueue "fruits" "apple"
+    queue enqueue fruits "apple"
     actual=$(declare -p fruits)
     assert_eq 'declare -a fruits=([0]="apple")' "$actual" 'should be declare -a fruits=([0]="apple")'
     if [[ "$?" == 0 ]]; then
@@ -53,7 +53,7 @@ test_queue()(
       log_failure "enqueue should push apple to fruits"
     fi
 
-    queue enqueue "fruits" "pear"
+    queue enqueue fruits "pear"
     actual=$(declare -p fruits)
     assert_eq 'declare -a fruits=([0]="apple" [1]="pear")' \
       "$actual" 'should be declare -a fruits=([0]="apple" [1]="pear")'
@@ -63,7 +63,7 @@ test_queue()(
       log_failure "enqueue should enqueue pear to fruits"
     fi
 
-    queue enqueue "fruits" "peach"
+    queue enqueue fruits "peach"
     actual=$(declare -p fruits)
     assert_eq 'declare -a fruits=([0]="apple" [1]="pear" [2]="peach")' \
       "$actual" 'should be declare -a fruits=([0]="apple" [1]="pear" [2]="peach")'
@@ -79,7 +79,7 @@ test_queue()(
   test_size() {
     log_header "Test size"
 
-    queue create "fruits"
+    queue create fruits
 
     local actual
 
@@ -91,9 +91,9 @@ test_queue()(
       log_failure "size should return 0"
     fi
 
-    queue enqueue "fruits" "apple"
-    queue enqueue "fruits" "pear"
-    queue enqueue "fruits" "peach"
+    queue enqueue fruits "apple"
+    queue enqueue fruits "pear"
+    queue enqueue fruits "peach"
 
     actual=$(queue size fruits)
     assert_eq '3' "$actual" 'should be 3'
@@ -109,7 +109,7 @@ test_queue()(
   test_empty() {
     log_header "Test empty"
 
-    queue create "fruits"
+    queue create fruits
     local actual
 
     actual=$(queue empty fruits)
@@ -120,7 +120,7 @@ test_queue()(
       log_failure "empty should return true"
     fi
 
-    queue enqueue "fruits" "apple"
+    queue enqueue fruits "apple"
 
     actual=$(queue empty fruits)
     assert_eq 'false' "$actual" 'should be false'
@@ -130,7 +130,7 @@ test_queue()(
       log_failure "empty should return false"
     fi
 
-    queue dequeue "fruits"
+    queue dequeue fruits
 
     actual=$(queue empty fruits)
     assert_eq 'true' "$actual" 'should be true'
@@ -146,15 +146,15 @@ test_queue()(
   test_dequeue() {
     log_header "Test dequeue"
 
-    queue create "fruits"
-    queue enqueue "fruits" "apple"
-    queue enqueue "fruits" "pear"
-    queue enqueue "fruits" "peach"
+    queue create fruits
+    queue enqueue fruits "apple"
+    queue enqueue fruits "pear"
+    queue enqueue fruits "peach"
 
     local actual
 
-    queue dequeue "fruits"
-    actual=$(queue peek "fruits")
+    queue dequeue fruits
+    actual=$(queue peek fruits)
 
     assert_eq "pear" "$actual" "should be pear"
     if [[ "$?" == 0 ]]; then
@@ -163,8 +163,8 @@ test_queue()(
       log_failure "dequeue should remove apple from fruits"
     fi
 
-    queue dequeue "fruits"
-    actual=$(queue peek "fruits")
+    queue dequeue fruits
+    actual=$(queue peek fruits)
 
     assert_eq "peach" "$actual" "should be peach"
     if [[ "$?" == 0 ]]; then
@@ -173,8 +173,8 @@ test_queue()(
       log_failure "dequeue should remove pear from fruits"
     fi
 
-    queue dequeue "fruits"
-    actual=$(queue peek "fruits")
+    queue dequeue fruits
+    actual=$(queue peek fruits)
 
     assert_eq "" "$actual" 'should be ""'
     if [[ "$?" == 0 ]]; then
@@ -189,10 +189,10 @@ test_queue()(
   test_peek() {
     log_header "Test peek"
 
-    queue create "fruits"
-    queue enqueue "fruits" "apple"
-    queue enqueue "fruits" "pear"
-    queue enqueue "fruits" "peach"
+    queue create fruits
+    queue enqueue fruits "apple"
+    queue enqueue fruits "pear"
+    queue enqueue fruits "peach"
 
     local actual
 
@@ -204,7 +204,7 @@ test_queue()(
       log_failure "peek should retur apple"
     fi
 
-    queue dequeue "fruits"
+    queue dequeue fruits
     actual=$(queue peek fruits)
     assert_eq 'pear' "$actual" 'should be pear'
     if [[ "$?" == 0 ]]; then
@@ -221,8 +221,8 @@ test_queue()(
 
     local actual
 
-    queue create "fruits"
-    queue clear "fruits"
+    queue create fruits
+    queue clear fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
@@ -231,10 +231,10 @@ test_queue()(
       log_failure "clear should clear 'fruits'"
     fi
 
-    queue create "fruits"
-    queue enqueue "fruits" "apple"
-    queue enqueue "fruits" "pear"
-    queue clear "fruits"
+    queue create fruits
+    queue enqueue fruits "apple"
+    queue enqueue fruits "pear"
+    queue clear fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
@@ -242,6 +242,27 @@ test_queue()(
     else
       log_failure "clear should clear 'fruits'"
     fi
+
+    unset fruits
+  }
+
+  test_destroy() {
+    log_header "Test destroy"
+
+    queue create fruits
+    queue clear fruits
+    queue destroy fruits
+
+    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
+                    || log_success "fruits destroyed"
+
+
+    queue create fruits
+    queue enqueue fruits "apple"
+    queue destroy fruits
+
+    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
+                    || log_success "fruits destroyed"
 
     unset fruits
   }
@@ -255,6 +276,7 @@ test_queue()(
   test_dequeue
   test_peek
   test_clear
+  test_destroy
 
 )
 

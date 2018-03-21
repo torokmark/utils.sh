@@ -102,11 +102,19 @@ queue() {
 
             ;;
 
+        destroy)
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
+
+            unset $1
+            ;;
+
 
         *)
             echo $"Usage: $0 { create | enqueue "\
               " | dequeue | peek | clear "\
-              " | size | emptz "\
+              " | size | empty | destroy "\
               "}"
             exit 1
 

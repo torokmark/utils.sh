@@ -25,7 +25,7 @@ test_aggregate()(
 
     local actual
 
-    aggregate create "fruits"
+    aggregate create fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
@@ -40,8 +40,8 @@ test_aggregate()(
   test_add(){
     log_header "Test add"
 
-    aggregate create "fruits"
-    aggregate add "fruits" "apple"
+    aggregate create fruits
+    aggregate add fruits "apple"
     local actual
 
     actual=$(aggregate contains fruits apple)
@@ -56,10 +56,10 @@ test_aggregate()(
   test_remove(){
     log_header "Test remove"
 
-    aggregate create "fruits"
-    aggregate add "fruits" "apple"
-    aggregate add "fruits" "pear"
-    aggregate add "fruits" "peach"
+    aggregate create fruits
+    aggregate add fruits "apple"
+    aggregate add fruits "pear"
+    aggregate add fruits "peach"
     local actual
 
 
@@ -85,7 +85,7 @@ test_aggregate()(
   test_size() {
     log_header "Test size"
 
-    aggregate create "fruits"
+    aggregate create fruits
 
     local actual
 
@@ -97,9 +97,9 @@ test_aggregate()(
       log_failure "size should return 0"
     fi
 
-    aggregate add "fruits" "apple"
-    aggregate add "fruits" "pear"
-    aggregate add "fruits" "peach"
+    aggregate add fruits "apple"
+    aggregate add fruits "pear"
+    aggregate add fruits "peach"
 
     actual=$(aggregate size fruits)
     assert_eq '3' "$actual" 'should be 3'
@@ -115,7 +115,7 @@ test_aggregate()(
   test_empty() {
     log_header "Test empty"
 
-    aggregate create "fruits"
+    aggregate create fruits
     local actual
 
     actual=$(aggregate empty fruits)
@@ -126,7 +126,7 @@ test_aggregate()(
       log_failure "empty should return true"
     fi
 
-    aggregate add "fruits" "apple"
+    aggregate add fruits "apple"
 
     actual=$(aggregate empty fruits)
     assert_eq 'false' "$actual" 'should be false'
@@ -136,7 +136,7 @@ test_aggregate()(
       log_failure "empty should return false"
     fi
 
-    aggregate remove "fruits" "apple"
+    aggregate remove fruits "apple"
 
     actual=$(aggregate empty fruits)
     assert_eq 'true' "$actual" 'should be true'
@@ -154,8 +154,8 @@ test_aggregate()(
 
     local actual
 
-    aggregate create "fruits"
-    aggregate clear "fruits"
+    aggregate create fruits
+    aggregate clear fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
@@ -164,11 +164,11 @@ test_aggregate()(
       log_failure "clear should clear 'fruits'"
     fi
 
-    aggregate create "fruits"
-    aggregate add "fruits" "apple"
-    aggregate add "fruits" "pear"
-    aggregate add "fruits" "peach"
-    aggregate clear "fruits"
+    aggregate create fruits
+    aggregate add fruits "apple"
+    aggregate add fruits "pear"
+    aggregate add fruits "peach"
+    aggregate clear fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
@@ -183,15 +183,15 @@ test_aggregate()(
   test_union(){
     log_header "Test union"
 
-    aggregate create "tropical"
-    aggregate add "tropical" "banana"
-    aggregate add "tropical" "guava"
-    aggregate add "tropical" "lemon"
+    aggregate create tropical
+    aggregate add tropical "banana"
+    aggregate add tropical "guava"
+    aggregate add tropical "lemon"
 
-    aggregate create "exotic"
-    aggregate add "exotic" "kiwi"
-    aggregate add "exotic" "pummelo"
-    aggregate add "exotic" "lychee"
+    aggregate create exotic
+    aggregate add exotic "kiwi"
+    aggregate add exotic "pummelo"
+    aggregate add exotic "lychee"
 
     aggregate union tropical exotic fruits
 
@@ -219,15 +219,15 @@ test_aggregate()(
   test_intersection(){
     log_header "Test intersection"
 
-    aggregate create "primes"
-    aggregate add "primes" "2"
-    aggregate add "primes" "3"
-    aggregate add "primes" "5"
+    aggregate create primes
+    aggregate add primes "2"
+    aggregate add primes "3"
+    aggregate add primes "5"
 
-    aggregate create "evens"
-    aggregate add "evens" "2"
-    aggregate add "evens" "4"
-    aggregate add "evens" "6"
+    aggregate create evens
+    aggregate add evens "2"
+    aggregate add evens "4"
+    aggregate add evens "6"
 
     aggregate intersection primes evens intersec
 
@@ -252,15 +252,15 @@ test_aggregate()(
   test_difference(){
     log_header "Test difference"
 
-    aggregate create "primes"
-    aggregate add "primes" "2"
-    aggregate add "primes" "3"
-    aggregate add "primes" "5"
+    aggregate create primes
+    aggregate add primes "2"
+    aggregate add primes "3"
+    aggregate add primes "5"
 
-    aggregate create "evens"
-    aggregate add "evens" "2"
-    aggregate add "evens" "4"
-    aggregate add "evens" "6"
+    aggregate create evens
+    aggregate add evens "2"
+    aggregate add evens "4"
+    aggregate add evens "6"
 
     aggregate difference primes evens diff
 
@@ -287,21 +287,21 @@ test_aggregate()(
   test_subset(){
     log_header "Test subset"
 
-    aggregate create "primes"
-    aggregate add "primes" "2"
-    aggregate add "primes" "3"
-    aggregate add "primes" "5"
+    aggregate create primes
+    aggregate add primes "2"
+    aggregate add primes "3"
+    aggregate add primes "5"
 
-    aggregate create "evens"
-    aggregate add "evens" "2"
-    aggregate add "evens" "4"
-    aggregate add "evens" "6"
-    aggregate add "evens" "8"
+    aggregate create evens
+    aggregate add evens "2"
+    aggregate add evens "4"
+    aggregate add evens "6"
+    aggregate add evens "8"
 
-    aggregate create "evens1"
-    aggregate add "evens1" "2"
-    aggregate add "evens1" "4"
-    aggregate add "evens1" "8"
+    aggregate create evens1
+    aggregate add evens1 "2"
+    aggregate add evens1 "4"
+    aggregate add evens1 "8"
 
     local actual=$(aggregate subset primes evens)
 
@@ -332,21 +332,21 @@ test_aggregate()(
   test_equal(){
     log_header "Test equal"
 
-    aggregate create "primes"
-    aggregate add "primes" "2"
-    aggregate add "primes" "3"
-    aggregate add "primes" "5"
+    aggregate create primes
+    aggregate add primes "2"
+    aggregate add primes "3"
+    aggregate add primes "5"
 
-    aggregate create "evens"
-    aggregate add "evens" "2"
-    aggregate add "evens" "4"
-    aggregate add "evens" "6"
+    aggregate create evens
+    aggregate add evens "2"
+    aggregate add evens "4"
+    aggregate add evens "6"
 
 
-    aggregate create "evens1"
-    aggregate add "evens1" "2"
-    aggregate add "evens1" "4"
-    aggregate add "evens1" "6"
+    aggregate create evens1
+    aggregate add evens1 "2"
+    aggregate add evens1 "4"
+    aggregate add evens1 "6"
 
     local actual=$(aggregate equal primes evens)
 
@@ -377,10 +377,10 @@ test_aggregate()(
   test_elmenets(){
     log_header "Test elements"
 
-    aggregate create "fruits"
-    aggregate add "fruits" "apple"
-    aggregate add "fruits" "pear"
-    aggregate add "fruits" "peach"
+    aggregate create fruits
+    aggregate add fruits "apple"
+    aggregate add fruits "pear"
+    aggregate add fruits "peach"
     local actual=true
 
     for i in apple pear peach; do
@@ -403,10 +403,10 @@ test_aggregate()(
   test_contains(){
     log_header "Test contains"
 
-    aggregate create "fruits"
-    aggregate add "fruits" "apple" "1"
-    aggregate add "fruits" "pear" "12"
-    aggregate add "fruits" "peach" "21"
+    aggregate create fruits
+    aggregate add fruits "apple" "1"
+    aggregate add fruits "pear" "12"
+    aggregate add fruits "peach" "21"
     local actual
 
     for i in $(aggregate keys fruits); do
@@ -422,6 +422,28 @@ test_aggregate()(
     unset fruits
   }
 
+  test_destroy() {
+    log_header "Test destroy"
+
+    aggregate create fruits
+    aggregate clear fruits
+    aggregate destroy fruits
+
+    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
+                    || log_success "fruits destroyed"
+
+
+    aggregate create fruits
+    aggregate add fruits "apple"
+    aggregate destroy fruits
+
+    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
+                    || log_success "fruits destroyed"
+
+    unset fruits
+  }
+
+
   # test calls
 
   test_create
@@ -436,6 +458,7 @@ test_aggregate()(
   test_subset
   test_equal
   test_empty
+  test_destroy
 
 )
 

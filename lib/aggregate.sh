@@ -32,7 +32,7 @@ aggregate() {
             #[[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[create must be followed by one param]" && return 1
 
-            set_name="$1"
+            local set_name="$1"
             declare -gA "$set_name"
 
             ;;
@@ -212,6 +212,7 @@ aggregate() {
             declare -n second_set="$2"
 
             local subset="true"
+            local contains
 
             for i in "${!first_set[@]}"
             do
@@ -230,10 +231,18 @@ aggregate() {
             #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
 
-            declare -n map_name="$1"
-            local size="${#map_name[@]}"
+            declare -n set_name="$1"
+            local size="${#set_name[@]}"
             [[ $size -eq 0 ]] && echo "true" || echo "false"
 
+            ;;
+
+          destroy)
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
+
+            unset $1
             ;;
 
         *)
@@ -241,7 +250,7 @@ aggregate() {
               "| remove | elements | clear "\
               "| size | union | intersection "\
               "| difference | subset | equal "\
-              "| empty }"
+              "| empty | destroy }"
             exit 1
 
   esac

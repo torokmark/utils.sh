@@ -25,7 +25,7 @@ test_map()(
 
     local actual
 
-    map create "fruits"
+    map create fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
@@ -40,8 +40,8 @@ test_map()(
   test_add(){
     log_header "Test add"
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
+    map create fruits
+    map add fruits "apple" "1"
     local actual
 
     actual=$(map contains fruits apple)
@@ -56,9 +56,9 @@ test_map()(
   test_get(){
     log_header "Test get"
 
-    map create "fruits"
-    map add "fruits" "apple" "3"
-    map add "fruits" "pear" "5"
+    map create fruits
+    map add fruits "apple" "3"
+    map add fruits "pear" "5"
     local actual
 
     actual=$(map get fruits apple)
@@ -81,9 +81,9 @@ test_map()(
   test_set(){
     log_header "Test set"
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
-    map set "fruits" "apple" "2"
+    map create fruits
+    map add fruits "apple" "1"
+    map set fruits "apple" "2"
     local actual
 
     actual=$(map get fruits apple)
@@ -98,10 +98,10 @@ test_map()(
   test_remove(){
     log_header "Test remove"
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
-    map add "fruits" "pear" "12"
-    map add "fruits" "peach" "21"
+    map create fruits
+    map add fruits "apple" "1"
+    map add fruits "pear" "12"
+    map add fruits "peach" "21"
     local actual
 
 
@@ -127,7 +127,7 @@ test_map()(
   test_size() {
     log_header "Test size"
 
-    map create "fruits"
+    map create fruits
 
     local actual
 
@@ -139,9 +139,9 @@ test_map()(
       log_failure "size should return 0"
     fi
 
-    map add "fruits" "apple" "1"
-    map add "fruits" "pear" "12"
-    map add "fruits" "peach" "21"
+    map add fruits "apple" "1"
+    map add fruits "pear" "12"
+    map add fruits "peach" "21"
 
     actual=$(map size fruits)
     assert_eq '3' "$actual" 'should be 3'
@@ -157,7 +157,7 @@ test_map()(
   test_empty() {
     log_header "Test empty"
 
-    map create "fruits"
+    map create fruits
     local actual
 
     actual=$(map empty fruits)
@@ -168,7 +168,7 @@ test_map()(
       log_failure "empty should return true"
     fi
 
-    map add "fruits" "apple" "1"
+    map add fruits "apple" "1"
 
     actual=$(map empty fruits)
     assert_eq 'false' "$actual" 'should be false'
@@ -178,7 +178,7 @@ test_map()(
       log_failure "empty should return false"
     fi
 
-    map remove "fruits" "apple"
+    map remove fruits "apple"
 
     actual=$(map empty fruits)
     assert_eq 'true' "$actual" 'should be true'
@@ -196,8 +196,8 @@ test_map()(
 
     local actual
 
-    map create "fruits"
-    map clear "fruits"
+    map create fruits
+    map clear fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
@@ -206,11 +206,11 @@ test_map()(
       log_failure "clear should clear 'fruits'"
     fi
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
-    map add "fruits" "pear" "12"
-    map add "fruits" "peach" "21"
-    map clear "fruits"
+    map create fruits
+    map add fruits "apple" "1"
+    map add fruits "pear" "12"
+    map add fruits "peach" "21"
+    map clear fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
@@ -225,10 +225,10 @@ test_map()(
   test_keys(){
     log_header "Test keys"
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
-    map add "fruits" "pear" "12"
-    map add "fruits" "peach" "21"
+    map create fruits
+    map add fruits "apple" "1"
+    map add fruits "pear" "12"
+    map add fruits "peach" "21"
     local actual=true
 
     for i in apple pear peach; do
@@ -251,10 +251,10 @@ test_map()(
   test_values(){
     log_header "Test values"
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
-    map add "fruits" "pear" "12"
-    map add "fruits" "peach" "21"
+    map create fruits
+    map add fruits "apple" "1"
+    map add fruits "pear" "12"
+    map add fruits "peach" "21"
     local actual="true"
 
     if [[ $(map get fruits apple) -ne '1' ]]; then
@@ -283,10 +283,10 @@ test_map()(
   test_contains(){
     log_header "Test contains"
 
-    map create "fruits"
-    map add "fruits" "apple" "1"
-    map add "fruits" "pear" "12"
-    map add "fruits" "peach" "21"
+    map create fruits
+    map add fruits "apple" "1"
+    map add fruits "pear" "12"
+    map add fruits "peach" "21"
     local actual
 
     for i in $(map keys fruits); do
@@ -299,6 +299,27 @@ test_map()(
         log_failure "map 'fruits' should contain $i"
       fi
     done
+    unset fruits
+  }
+
+  test_destroy() {
+    log_header "Test destroy"
+
+    map create fruits
+    map clear fruits
+    map destroy fruits
+
+    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
+                    || log_success "fruits destroyed"
+
+
+    map create fruits
+    map add fruits "apple" "4"
+    map destroy fruits
+
+    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
+                    || log_success "fruits destroyed"
+
     unset fruits
   }
 
@@ -316,6 +337,7 @@ test_map()(
   test_values
   test_contains
   test_empty
+  test_destroy
 
 )
 
