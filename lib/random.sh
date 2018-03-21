@@ -21,37 +21,26 @@
 source "./console.sh"
 
 random() {
-  local operation="$1"
-  shift
+  local params="$#"
 
-  case "$operation" in
+      case "$params" in
 
-        get)
-            local params="$#"
+        "1")
+          echo $(( $RANDOM % ( $1 + 1 ) ))
+          ;;
 
-            case "$params" in
+        "2")
+          echo $(( ( $RANDOM % ( $2 - $1 + 1 ) ) + $1 ))
+          ;;
 
-                "1")
-                    echo $(( $RANDOM % ( $1 + 1 ) ))
-                    ;;
-
-                "2")
-                    echo $(( ( $RANDOM % ( $2 - $1 + 1 ) ) + $1 ))
-                    ;;
-
-                *)
-                    echo $RANDOM
-                    ;;
-            esac
-            ;;
-
-
-
+        "0")
+          echo $RANDOM
+          ;;
 
         *)
-            echo $"Usage: $0 { get }"
-            exit 1
+          echo $"Usage: $0 [<param1> [<param2>]]"
+          exit 1
 
-  esac
-
+      esac
+            
 }
