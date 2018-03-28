@@ -467,12 +467,6 @@ test_string()(
     fi
   }
 
-  test_matches() {
-    log_header "Test matches"
-
-    log_warning "Pending tests"
-  }
-
 
   test_replace_all() {
     log_header "Test replace_all"

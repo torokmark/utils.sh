@@ -238,10 +238,6 @@ string() {
 
             ;;
 
-        format)
-            :
-            ;;
-
         ## Example:
         ##   index_of "apple" "p" -> 1
         ##   index_of "apple" "pl" -> 2
@@ -326,10 +322,6 @@ string() {
             echo "$retval"
             ;;
 
-        matches)
-            :
-            ;;
-
         ## Example:
         ##   replace "apple" "p" "c" -> accle
         ##   replace "apple" "pp" "c" -> acle
@@ -337,7 +329,7 @@ string() {
             # pre-conditions:
             [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
 
-            local original_string string_to_replace_with retval
+            local original_string string_to_replace string_to_replace_with retval
             original_string="$1"
             string_to_replace="$2"
             string_to_replace_with="$3"
@@ -505,9 +497,9 @@ string() {
                 " capitalize | char_at | compare_to "\
                 "| compare_to_ignore_case | concat "\
                 "| contains | count | ends_with | equals "\
-                "| equals_ignore_case | format | index_of "\
+                "| equals_ignore_case | index_of "\
                 "| is_empty | join_fields | last_index_of "\
-                "| length | matches | replace | replace_all "\
+                "| length | replace | replace_all "\
                 "| replace_first | starts_with | strip | substring "\
                 "| swapcase | title | to_lower_case "\
                 "| to_upper_case | trim }"
