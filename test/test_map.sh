@@ -306,14 +306,6 @@ test_map()(
     log_header "Test destroy"
 
     map create fruits
-    map clear fruits
-    map destroy fruits
-
-    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
-                    || log_success "fruits destroyed"
-
-
-    map create fruits
     map add fruits "apple" "4"
     map destroy fruits
 

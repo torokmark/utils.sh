@@ -250,14 +250,6 @@ test_stack()(
     log_header "Test destroy"
 
     stack create fruits
-    stack clear fruits
-    stack destroy fruits
-
-    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
-                    || log_success "fruits destroyed"
-
-
-    stack create fruits
     stack push fruits "apple"
     stack destroy fruits
 

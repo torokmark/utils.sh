@@ -426,14 +426,6 @@ test_aggregate()(
     log_header "Test destroy"
 
     aggregate create fruits
-    aggregate clear fruits
-    aggregate destroy fruits
-
-    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
-                    || log_success "fruits destroyed"
-
-
-    aggregate create fruits
     aggregate add fruits "apple"
     aggregate destroy fruits
 

@@ -250,14 +250,6 @@ test_queue()(
     log_header "Test destroy"
 
     queue create fruits
-    queue clear fruits
-    queue destroy fruits
-
-    [[ ${fruits} ]] && log_failure "fruits not destroyed"\
-                    || log_success "fruits destroyed"
-
-
-    queue create fruits
     queue enqueue fruits "apple"
     queue destroy fruits
 
