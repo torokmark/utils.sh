@@ -24,7 +24,7 @@ Check out the repository and source the file which you want to use.
 ### How to use
 
 ```sh
-source `queue.sh`
+source 'queue.sh'
 # I create a queue called fruits
 queue create fruits
 # put an element to queue
@@ -38,4 +38,4 @@ queue destroy fruits
 1. If you are intended to contribute the project, please take a look at [shell script style guide](https://google.github.io/styleguide/shell.xml)
 2. Fork this repository
 3. Make your changes
-4. Send a RP
+4. Send an RP
