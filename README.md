@@ -15,6 +15,7 @@ The next container based packages are also available
 * **Queue** : provides the queue type functionality
 * **Stack** : provides the implementation and functionality of a stack
 
+And String as well
 * **String** : provides string functionality with well-known methods
 
 ### How to install
