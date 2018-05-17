@@ -32,7 +32,7 @@ map() {
             #[[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[create must be followed by one param]" && return 1
 
-            map_name="$1"
+            local map_name="$1"
             declare -gA "$map_name"
             ;;
 
@@ -156,11 +156,20 @@ map() {
 
             ;;
 
+        destroy)
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
+
+            unset $1
+            ;;
+
         *)
             echo $"Usage: $0 { create | add "\
               "| remove | keys | values "\
               "| clear | size | get "\
-              "| set | contains | empty }"
+              "| set | contains | empty "\
+              "| destroy }"
             exit 1
 
   esac

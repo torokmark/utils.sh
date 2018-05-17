@@ -20,12 +20,12 @@ source "../lib/random.sh"
 test_random()(
   log_header "Test random.sh"
 
-  test_get() {
-    log_header "Test get"
+  test() {
+    log_header "Test random"
 
     for i in {1..5}; do
       local between
-      local actual=$(random get 10)
+      local actual=$(random 10)
       [[ $actual -le 10 ]] && between=true
       [[ $actual -gt 10 ]] && between=false
 
@@ -39,7 +39,7 @@ test_random()(
 
     for i in {1..5}; do
       local between
-      local actual=$(random get 20 30)
+      local actual=$(random 20 30)
       [[ $actual -le 30 ]] || [[ $actual -ge 20 ]] && between=true
       [[ $actual -gt 30 ]] || [[ $actual -lt 20 ]] && between=false
 
@@ -53,10 +53,9 @@ test_random()(
 
   }
 
-
   # test calls
 
-  test_get
+  test
 
 )
 

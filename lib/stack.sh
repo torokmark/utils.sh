@@ -106,10 +106,18 @@ stack() {
 
             ;;
 
+        destroy)
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
+
+            unset $1
+            ;;
+
         *)
             echo $"Usage: $0 { create | push "\
               " | pop | top | clear "\
-              " | empty }"
+              " | empty | destroy }"
             exit 1
 
   esac

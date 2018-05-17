@@ -11,9 +11,9 @@
 ##   https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
 ##   https://docs.python.org/2/library/string.html#string-functions
 ##
-## author: Mark Torok
+## author: Mihaly Csokas
 ##
-## date: 07. Dec. 2016
+## date: 07. Dec. 2017
 ##
 ## license: MIT
 ##
@@ -238,10 +238,6 @@ string() {
 
             ;;
 
-        format)
-            :
-            ;;
-
         ## Example:
         ##   index_of "apple" "p" -> 1
         ##   index_of "apple" "pl" -> 2
@@ -250,19 +246,15 @@ string() {
             # pre-conditions:
             [[ "$#" -lt 2 ]] && log_failure "[must be two params]" && return 1
 
-            local str char
-            str="$1"
-            char="$2"
-
+            local str="$1"
+            local sub_str="$2"
             local retval
-            retval=false
+            local temp
 
-            local x
-            x="${1%%$2*}"
-            log_info "xxx :: $x"
-            [[ $x = $1 ]] && echo -1 || echo ${#x}
+            temp=${str#*$sub_str}
+            retval=$(( ${#str} - ${#sub_str} - ${#temp}))
 
-            echo "$retval"
+            echo $retval
 
             ;;
 
@@ -330,15 +322,21 @@ string() {
             echo "$retval"
             ;;
 
-        matches)
-            :
-            ;;
-
         ## Example:
         ##   replace "apple" "p" "c" -> accle
         ##   replace "apple" "pp" "c" -> acle
         replace)
-            :
+            # pre-conditions:
+            [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
+
+            local original_string string_to_replace string_to_replace_with retval
+            original_string="$1"
+            string_to_replace="$2"
+            string_to_replace_with="$3"
+            retval="${original_string/$string_to_replace/$string_to_replace_with}"
+
+            echo "$retval"
+
             ;;
 
         replace_all)
@@ -355,19 +353,7 @@ string() {
 
             ;;
 
-        replace_first)
-            # pre-conditions:
-            [[ "$#" -lt 3 ]] && log_failure "[must be three params]" && return 1
 
-            local original_string string_to_replace_with retval
-            original_string="$1"
-            string_to_replace="$2"
-            string_to_replace_with="$3"
-            retval="${original_string/$string_to_replace/$string_to_replace_with}"
-
-            echo "$retval"
-
-            ;;
 
         ## Example:
         ##   -
@@ -511,9 +497,9 @@ string() {
                 " capitalize | char_at | compare_to "\
                 "| compare_to_ignore_case | concat "\
                 "| contains | count | ends_with | equals "\
-                "| equals_ignore_case | format | index_of "\
+                "| equals_ignore_case | index_of "\
                 "| is_empty | join_fields | last_index_of "\
-                "| length | matches | replace | replace_all "\
+                "| length | replace | replace_all "\
                 "| replace_first | starts_with | strip | substring "\
                 "| swapcase | title | to_lower_case "\
                 "| to_upper_case | trim }"

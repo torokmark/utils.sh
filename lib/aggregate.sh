@@ -21,7 +21,7 @@
 
 source "./console.sh"
 
-set_collection() {
+aggregate() {
   local operation="$1"
   shift
 
@@ -32,7 +32,7 @@ set_collection() {
             #[[ "$#" -lt 1 ]] && log_failure "[create must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[create must be followed by one param]" && return 1
 
-            set_name="$1"
+            local set_name="$1"
             declare -gA "$set_name"
 
             ;;
@@ -118,17 +118,17 @@ set_collection() {
             declare -n first_set="$1"
             declare -n second_set="$2"
 
-            [[ ! -v $3 ]] && set_collection create $3
+            [[ ! -v $3 ]] && aggregate create $3
             declare -n union_set="$3"
 
             for i in "${!first_set[@]}"
             do
-              set_collection add union_set "$i"
+              aggregate add union_set "$i"
             done
 
             for i in "${!second_set[@]}"
             do
-              set_collection add union_set "$i"
+              aggregate add union_set "$i"
             done
 
             ;;
@@ -141,15 +141,15 @@ set_collection() {
             declare -n first_set="$1"
             declare -n second_set="$2"
 
-            [[ ! -v $3 ]] && set_collection create $3
+            [[ ! -v $3 ]] && aggregate create $3
             declare -n intersection_set="$3"
             local contains="false"
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_collection contains second_set "$i" )
+              contains=$( aggregate contains second_set "$i" )
               if [[ $contains = "true" ]]; then
-                set_collection add intersection_set "$i"
+                aggregate add intersection_set "$i"
               fi
             done
 
@@ -163,15 +163,15 @@ set_collection() {
             declare -n first_set="$1"
             declare -n second_set="$2"
 
-            [[ ! -v $3 ]] && set_collection create $3
+            [[ ! -v $3 ]] && aggregate create $3
             declare -n difference_set="$3"
             local contains="false"
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_collection contains second_set "$i" )
+              contains=$( aggregate contains second_set "$i" )
               if [[ $contains = "false" ]]; then
-                set_collection add difference_set "$i"
+                aggregate add difference_set "$i"
               fi
             done
 
@@ -190,7 +190,7 @@ set_collection() {
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_collection contains second_set "$i" )
+              contains=$( aggregate contains second_set "$i" )
               if [[ $contains = "false" ]]; then
                 equals="false"
               fi
@@ -212,10 +212,11 @@ set_collection() {
             declare -n second_set="$2"
 
             local subset="true"
+            local contains
 
             for i in "${!first_set[@]}"
             do
-              contains=$( set_collection contains second_set "$i" )
+              contains=$( aggregate contains second_set "$i" )
               if [[ $contains = "false" ]]; then
                 subset="false"
               fi
@@ -230,10 +231,18 @@ set_collection() {
             #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
 
-            declare -n map_name="$1"
-            local size="${#map_name[@]}"
+            declare -n set_name="$1"
+            local size="${#set_name[@]}"
             [[ $size -eq 0 ]] && echo "true" || echo "false"
 
+            ;;
+
+          destroy)
+            # pre-conditions:
+            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
+
+            unset $1
             ;;
 
         *)
@@ -241,7 +250,7 @@ set_collection() {
               "| remove | elements | clear "\
               "| size | union | intersection "\
               "| difference | subset | equal "\
-              "| empty }"
+              "| empty | destroy }"
             exit 1
 
   esac

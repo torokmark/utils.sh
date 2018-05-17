@@ -17,7 +17,7 @@
 
 source "./console.sh"
 
-date() (
+datetime() (
   local function_name="$1"
 
   #       %T     The time in 24-hour notation (%H:%M:%S).  (SU)
@@ -81,6 +81,14 @@ date() (
 
     local retval
     retval=$( printf "%(%F)T" -1 )
+
+    echo "$retval"
+  }
+
+  datetime() {
+
+    local retval
+    retval="$( printf "%(%F)T" -1 )"_"$( printf "%(%T)T" -1 )"
 
     echo "$retval"
   }
@@ -167,6 +175,10 @@ date() (
             current_time
             ;;
 
+        date)
+            date
+            ;;
+
         month_name)
             month_name
             ;;
@@ -216,7 +228,7 @@ date() (
             ;;
 
         "")
-            date
+            datetime
             ;;
 
         *)
@@ -224,7 +236,8 @@ date() (
               "| name_of_day | century | day_of_month"\
               "| hour | date | day_of_year | month"\
               "| minute | seconds_since_epoch| second"\
-              "| day_of_week | week_of_year | year}"
+              "| day_of_week | week_of_year | year"\
+              "| datetime}"
             exit 1
 
   esac
