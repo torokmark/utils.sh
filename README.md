@@ -34,6 +34,8 @@ queue peek fruits
 queue destroy fruits
 ```
 
+For more information, take a look at the utils wiki page: [wiki](https://github.com/torokmark/utils.sh/wiki)
+
 ### Contribute
 
 1. If you are intended to contribute the project, please take a look at [shell script style guide](https://google.github.io/styleguide/shell.xml)
