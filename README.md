@@ -1,7 +1,7 @@
 # Shell Utils
 
 This repo is intended to extend the shell and contain useful and readable functions
-that help developers to maintaine there scripts easier and neatly.
+that help developers to maintaine their scripts easier and neatly.
 
 The following packages (which basically functions) are available.
 * **Console** : provides formatted printing to the console
