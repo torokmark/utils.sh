@@ -18,6 +18,10 @@ The next container based packages are also available
 And String as well
 * **String** : provides string functionality with well-known methods
 
+### Documentation
+
+Github Wiki doc is available here: https://github.com/torokmark/utils.sh/wiki
+
 ### How to install
 
 Check out the repository and source the file which you want to use.
