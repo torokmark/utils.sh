@@ -1,8 +1,6 @@
 deploy:
   provider: script
-  script: 
-  - git clone git@github.com:torokmark/assert.sh.git vendor/assert.sh 
-  - bash ./test/tests.sh
+  script: bash ./setup.sh
   on:
     branch: master 
 

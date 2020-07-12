@@ -1,7 +1,7 @@
-: '#!/usr/bin/env bash
+#!/usr/bin/env bash
 
-root_dir="$( pwd )"
-
-export PROJECT_HOME="$root_dir"
-export IMPORT_HOME="$root_dir/lib/import.sh"
-'
+if [ ! -d 'vendor/assert.sh' ]; then
+  git clone git@github.com:torokmark/assert.sh.git vendor/assert.sh 
+fi
+bash "./test/tests.sh"
+ 
