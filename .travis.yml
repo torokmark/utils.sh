@@ -1,5 +1,5 @@
 language: bash
 before_script:
-  - git clone git@github.com:torokmark/assert.sh.git vendor/assert.sh 
+  - git clone https://github.com/torokmark/assert.sh.git vendor/assert.sh 
 script:
   - bash './test/tests.sh'
