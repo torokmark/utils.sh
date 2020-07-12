@@ -1,6 +1,5 @@
-deploy:
-  provider: script
-  script: bash ./setup.sh
-  on:
-    branch: master 
-
+language: bash
+before_script:
+  - git clone git@github.com:torokmark/assert.sh.git vendor/assert.sh 
+script:
+  - bash './test/tests.sh'
