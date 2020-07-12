@@ -13,9 +13,10 @@
 ##
 #####################################################################
 
-source "../lib/console.sh"
-source "../vendor/assert.sh/assert.sh" # it also sources the console.sh
-source "../lib/string.sh"
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$DIR/../lib/console.sh"
+source "$DIR/../vendor/assert.sh/assert.sh" # it also sources the console.sh
+source "$DIR/../lib/string.sh"
 
 test_string()(
   log_header "Test string.sh"

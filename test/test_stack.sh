@@ -13,9 +13,10 @@
 ##
 #####################################################################
 
-source "../lib/console.sh"
-source "../vendor/assert.sh/assert.sh" # it also sources the console.sh
-source "../lib/stack.sh"
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$DIR/../lib/console.sh"
+source "$DIR/../vendor/assert.sh/assert.sh"
+source "$DIR/../lib/stack.sh"
 
 test_stack()(
   log_header "Test stack.sh"

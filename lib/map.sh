@@ -19,7 +19,8 @@
 ##
 #####################################################################
 
-source "./console.sh"
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$DIR/console.sh"
 
 map() {
   local operation="$1"

@@ -13,9 +13,10 @@
 ##
 #####################################################################
 
-source "../lib/console.sh"
-source "../vendor/assert.sh/assert.sh"
-source "../lib/files.sh"
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$DIR/../lib/console.sh"
+source "$DIR/../vendor/assert.sh/assert.sh"
+source "$DIR/../lib/files.sh"
 
 test_files() {
   log_header "Test files.sh"
@@ -25,7 +26,7 @@ test_files() {
 
     local actual
 
-    actual=$( files is_file "test_files.sh" )
+    actual=$( files is_file "/usr/bin/env" )
     assert_eq 0 "$actual" "is_file should return true (0) if file exists"
     if [[ "$?" == 0 ]]; then
       log_success "is_file returns true (0)"
@@ -108,7 +109,7 @@ test_files() {
 
     local actual
 
-    actual=$( files is_symlink "files/go_home" )
+    actual=$( files is_symlink "/dev/log" )
     assert_eq 0 "$actual" "is_symlink should return true (0) if file is symlink"
     if [[ "$?" == 0 ]]; then
       log_success "is_symlink returns true (0)"
@@ -152,7 +153,7 @@ test_files() {
 
     local actual
 
-    actual=$( files is_readable "files/rwx_file" )
+    actual=$( files is_readable "/usr/bin/env" )
     assert_eq 0 "$actual" "is_readable should return true (0) if file is readable"
     if [[ "$?" == 0 ]]; then
       log_success "is_readable returns true (0)"
@@ -160,7 +161,7 @@ test_files() {
       log_failure "is_readable should return true (0)"
     fi
 
-    actual=$( files is_readable "files/no_rwx_file" )
+    actual=$( files is_readable "path/to/no_rwx_file" )
     assert_eq 1 "$actual" "is_readable should return false (1) if file is not readable"
     if [[ "$?" == 0 ]]; then
       log_success "is_readable returns false (1)"
@@ -174,7 +175,7 @@ test_files() {
 
     local actual
 
-    actual=$( files is_writable "files/rwx_file" )
+    actual=$( files is_writable "/dev/log" )
     assert_eq 0 "$actual" "is_writable should return true (0) if file is writable"
     if [[ "$?" == 0 ]]; then
       log_success "is_writable returns true (0)"
@@ -196,7 +197,7 @@ test_files() {
 
     local actual
 
-    actual=$( files is_executable "files/rwx_file" )
+    actual=$( files is_executable "/usr/bin/env" )
     assert_eq 0 "$actual" "is_executable should return true (0) if file is executable"
     if [[ "$?" == 0 ]]; then
       log_success "is_executable returns true (0)"
