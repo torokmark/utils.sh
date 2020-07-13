@@ -49,10 +49,10 @@ map() {
 
             ;;
 
-        clear)
+        erase)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
-            [[ "$#" -ne 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[erase must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[erase must be followed by one param]" && return 1
 
             unset $1
             declare -gA "$1"
@@ -116,7 +116,6 @@ map() {
 
         values)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[values must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[values must be followed by one param]" && return 1
 
             declare -n map_name="$1"
@@ -126,7 +125,6 @@ map() {
 
         contains)
             # pre-conditions:
-            #[[ "$#" -lt 2 ]] && log_failure "[contains must be followed by two params]" && return 1
             [[ "$#" -ne 2 ]] && log_failure "[contains must be followed by two params]" && return 1
 
             declare -n map_name="$1"
@@ -148,7 +146,6 @@ map() {
         empty)
 
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
 
             declare -n map_name="$1"
@@ -159,7 +156,6 @@ map() {
 
         destroy)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
 
             unset $1

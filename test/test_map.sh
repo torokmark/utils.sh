@@ -192,32 +192,32 @@ test_map()(
     unset fruits
   }
 
-  test_clear() {
-    log_header "Test clear"
+  test_erase() {
+    log_header "Test erase"
 
     local actual
 
     map create fruits
-    map clear fruits
+    map erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears an empty map 'fruits'"
+      log_success "erase clears an empty map 'fruits'"
     else
-      log_failure "clear should clear 'fruits'"
+      log_failure "erase should clear 'fruits'"
     fi
 
     map create fruits
     map add fruits "apple" "1"
     map add fruits "pear" "12"
     map add fruits "peach" "21"
-    map clear fruits
+    map erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears a non empty map 'fruits'"
+      log_success "erase clears a non empty map 'fruits'"
     else
-      log_failure "clear should clear 'fruits'"
+      log_failure "erase should clear 'fruits'"
     fi
 
     unset fruits
@@ -324,7 +324,7 @@ test_map()(
   test_get
   test_set
   test_remove
-  test_clear
+  test_erase
   test_size
   test_keys
   test_values
