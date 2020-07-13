@@ -1,5 +1,14 @@
 language: bash
+
+env:
+  - BASH=latest
+  - BASH=5.0.3
+  - BASH=4.4.23
+
 before_script:
   - git clone https://github.com/torokmark/assert.sh.git vendor/assert.sh 
+  - docker pull bash:$BASH
+  - docker run bash:$BASH --version
+
 script:
-  - bash './test/tests.sh'
+  - docker run -v $PWD:/bash bash:$BASH bash/utils.sh/test/tests.sh
