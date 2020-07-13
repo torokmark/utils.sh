@@ -5,7 +5,7 @@ env:
   - BASH=5.0.3
   - BASH=4.4.23
 before_install:
-  - add libncurses5-dbg
+  - sudo apt install libncurses5-dbg
 before_script:
   - git clone https://github.com/torokmark/assert.sh.git vendor/assert.sh 
   - docker pull bash:$BASH
