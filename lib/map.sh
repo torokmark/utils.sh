@@ -46,7 +46,6 @@ map() {
             local key="$2"
             local value="$3"
             map_name+=( ["$key"]="$value" )
-
             ;;
 
         erase)
@@ -54,9 +53,9 @@ map() {
             #[[ "$#" -lt 1 ]] && log_failure "[erase must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[erase must be followed by one param]" && return 1
 
-            unset $1
-            declare -gA "$1"
-
+            local map_name="$1"
+            unset "$1"
+            declare -gA "$map_name"
             ;;
 
         size)
