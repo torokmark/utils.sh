@@ -1,5 +1,7 @@
 # Shell Utils
 
+[![Build Status](https://travis-ci.org/torokmark/utils.sh.svg?branch=master)](https://travis-ci.org/torokmark/utils.sh)
+
 This repo is intended to extend the shell and contain useful and readable functions
 that help developers to maintaine their scripts easier and neatly.
 
@@ -8,6 +10,7 @@ The following packages (which basically functions) are available.
 * **Date** : provides rich date functionality
 * **Import** : provides improved import over source command
 * **Random** : provides readable way of using randoms
+* **Files** : provides tests against files in a neat way
 
 The next container based packages are also available
 * **Aggregate** : provides the aggregate or set functionality
