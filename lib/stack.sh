@@ -45,10 +45,10 @@ stack() {
 
             ;;
 
-        clear)
+        erase)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
-            [[ "$#" -ne 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[erase must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[erase must be followed by one param]" && return 1
 
             unset $1
             declare -ga "$1"
@@ -109,7 +109,7 @@ stack() {
 
         destroy)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[erase must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
 
             unset $1
@@ -117,7 +117,7 @@ stack() {
 
         *)
             echo $"Usage: $0 { create | push "\
-              " | pop | top | clear "\
+              " | pop | top | erase "\
               " | empty | destroy }"
             exit 1
 

@@ -217,31 +217,31 @@ test_stack()(
     unset fruits
   }
 
-  test_clear() {
-    log_header "Test clear"
+  test_erase() {
+    log_header "Test erase"
 
     local actual
 
     stack create fruits
-    stack clear fruits
+    stack erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears an empty stack 'fruits'"
+      log_success "erase clears an empty stack 'fruits'"
     else
-      log_failure "clear should return 'declare -a fruits'"
+      log_failure "erase should return 'declare -a fruits'"
     fi
 
     stack create fruits
     stack push fruits "apple"
     stack push fruits "pear"
-    stack clear fruits
+    stack erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears a non empty stack 'fruits'"
+      log_success "erase clears a non empty stack 'fruits'"
     else
-      log_failure "clear should return 'declare -a fruits'"
+      log_failure "erase should return 'declare -a fruits'"
     fi
 
     unset fruits
@@ -268,7 +268,7 @@ test_stack()(
   test_empty
   test_pop
   test_top
-  test_clear
+  test_erase
   test_destroy
 
 )

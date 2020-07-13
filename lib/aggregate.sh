@@ -50,10 +50,10 @@ aggregate() {
 
             ;;
 
-        clear)
+        erase)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
-            [[ "$#" -ne 1 ]] && log_failure "[clear must be followed by one param]" && return 1
+            #[[ "$#" -lt 1 ]] && log_failure "[erase must be followed by one param]" && return 1
+            [[ "$#" -ne 1 ]] && log_failure "[erase must be followed by one param]" && return 1
 
             unset $1
             declare -gA "$1"
@@ -206,7 +206,6 @@ aggregate() {
 
         subset)
             # pre-conditions:
-            #[[ "$#" -lt 2 ]] && log_failure "[subset must be followed by two params]" && return 1
             [[ "$#" -ne 2 ]] && log_failure "[subset must be followed by two params]" && return 1
 
             declare -n first_set="$1"
@@ -229,7 +228,6 @@ aggregate() {
           empty)
 
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[empty must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[empty must be followed by one param]" && return 1
 
             declare -n set_name="$1"
@@ -240,7 +238,6 @@ aggregate() {
 
           destroy)
             # pre-conditions:
-            #[[ "$#" -lt 1 ]] && log_failure "[clear must be followed by one param]" && return 1
             [[ "$#" -ne 1 ]] && log_failure "[destroy must be followed by one param]" && return 1
 
             unset $1
@@ -248,7 +245,7 @@ aggregate() {
 
         *)
             echo $"Usage: $0 { create | add "\
-              "| remove | elements | clear "\
+              "| remove | elements | erase "\
               "| size | union | intersection "\
               "| difference | subset | equal "\
               "| empty | destroy }"

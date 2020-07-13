@@ -217,31 +217,31 @@ test_queue()(
     unset fruits
   }
 
-  test_clear() {
-    log_header "Test clear"
+  test_erase() {
+    log_header "Test erase"
 
     local actual
 
     queue create fruits
-    queue clear fruits
+    queue erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears an empty queue 'fruits'"
+      log_success "erase clears an empty queue 'fruits'"
     else
-      log_failure "clear should clear 'fruits'"
+      log_failure "erase should clear 'fruits'"
     fi
 
     queue create fruits
     queue enqueue fruits "apple"
     queue enqueue fruits "pear"
-    queue clear fruits
+    queue erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -a fruits" "$actual" "should be 'declare -a fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears a non empty queue 'fruits'"
+      log_success "erase clears a non empty queue 'fruits'"
     else
-      log_failure "clear should clear 'fruits'"
+      log_failure "erase should clear 'fruits'"
     fi
 
     unset fruits
@@ -268,7 +268,7 @@ test_queue()(
   test_empty
   test_dequeue
   test_peek
-  test_clear
+  test_erase
   test_destroy
 
 )

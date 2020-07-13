@@ -14,10 +14,5 @@ echo -e "keys = ( $keys )"
 values=$( map values fruits )
 echo -e "values = ( $values )"
 
-map create fruits
-
-len=$( map size fruits )
-echo -e "size = $len"
-
 
 

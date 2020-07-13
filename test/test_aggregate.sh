@@ -150,32 +150,32 @@ test_aggregate()(
     unset fruits
   }
 
-  test_clear() {
-    log_header "Test clear"
+  test_erase() {
+    log_header "Test erase"
 
     local actual
 
     aggregate create fruits
-    aggregate clear fruits
+    aggregate erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears an empty aggregate 'fruits'"
+      log_success "erase clears an empty aggregate 'fruits'"
     else
-      log_failure "clear should clear 'fruits'"
+      log_failure "erase should clear 'fruits'"
     fi
 
     aggregate create fruits
     aggregate add fruits "apple"
     aggregate add fruits "pear"
     aggregate add fruits "peach"
-    aggregate clear fruits
+    aggregate erase fruits
     actual=$(declare -p fruits)
     assert_eq "declare -A fruits" "$actual" "should be 'declare -A fruits' "
     if [[ "$?" == 0 ]]; then
-      log_success "clear clears a non empty aggregate 'fruits'"
+      log_success "erase clears a non empty aggregate 'fruits'"
     else
-      log_failure "clear should clear 'fruits'"
+      log_failure "erase should clear 'fruits'"
     fi
 
     unset fruits
@@ -443,7 +443,7 @@ test_aggregate()(
   test_add
   test_remove
   test_elmenets
-  test_clear
+  test_erase
   test_size
   test_union
   test_intersection
