@@ -11,4 +11,4 @@ before_script:
   - docker run bash:$BASH --version
 
 script:
-  - docker run -v $PWD:/bash bash:$BASH bash/utils.sh/test/tests.sh
+  - docker run -v $PWD:/bash bash:$BASH bash/test/tests.sh
