@@ -180,16 +180,21 @@ test_files() {
     log_header "Test is_writable"
 
     local actual
+   
+    touch writable_file > /dev/null 2>&1
+    chmod 200 writable_file > /dev/null 2>&1
 
-    actual=$( files is_writable "/usr/bin/env" )
+    actual=$( files is_writable "writable_file" )
     assert_eq 0 "$actual" "is_writable should return true (0) if file is writable"
     if [[ "$?" == 0 ]]; then
       log_success "is_writable returns true (0)"
     else
       log_failure "is_writable should return true (0)"
     fi
+    
+    rm writable_file > /dev/null 2>&1
 
-    actual=$( files is_writable "files/no_rwx_file" )
+    actual=$( files is_writable "no_file" )
     assert_eq 1 "$actual" "is_writable should return false (1) if file is not writable"
     if [[ "$?" == 0 ]]; then
       log_success "is_writable returns false (1)"
