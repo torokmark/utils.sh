@@ -1,4 +1,4 @@
-language: bash
+anguage: bash
 
 env:
   - BASH=latest
@@ -8,6 +8,7 @@ before_script:
   - git clone https://github.com/torokmark/assert.sh.git vendor/assert.sh 
   - docker pull bash:$BASH
   - docker run bash:$BASH --version
+  - ln -s .travis.yml symlinkfile
 
 script:
   - docker run -v $PWD:/bash bash:$BASH bash/test/tests.sh
