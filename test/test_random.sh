@@ -16,7 +16,6 @@
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$DIR/../lib/console.sh"
 source "$DIR/../vendor/assert.sh/assert.sh"
-source "$DIR/../lib/files.sh"
 source "$DIR/../lib/random.sh"
 
 test_random()(
