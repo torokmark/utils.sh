@@ -27,6 +27,8 @@ Github Wiki doc is available here: https://github.com/torokmark/utils.sh/wiki
 
 ### How to install
 
+It requires Bash 4.4 or higher.
+
 Check out the repository and source the file which you want to use.
 
 ### How to use
