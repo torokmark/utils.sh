@@ -107,15 +107,21 @@ test_files() {
   test_is_symlink() {
     log_header "Test is_symlink"
 
-    local actual
+    touch reg_file > /dev/null 2>&1
+    ln -s reg_file symlink_file > /dev/null 2>&1
 
-    actual=$( files is_symlink "$DIR/symlinkfile" )
+    local actual
+    
+    actual=$( files is_symlink "symlink_file" )
     assert_eq 0 "$actual" "is_symlink should return true (0) if file is symlink"
     if [[ "$?" == 0 ]]; then
       log_success "is_symlink returns true (0)"
     else
       log_failure "is_symlink should return true (0)"
     fi
+
+    rm reg_file > /dev/null 2>&1
+    rm symlink_file > /dev/null 2>&1
 
     actual=$( files is_symlink "$DIR" )
     assert_eq 1 "$actual" "is_symlink should return false (1) if file is not symlink"
