@@ -181,7 +181,7 @@ test_files() {
 
     local actual
 
-    actual=$( files is_writable "/dev/log" )
+    actual=$( files is_writable "/usr/bin/env" )
     assert_eq 0 "$actual" "is_writable should return true (0) if file is writable"
     if [[ "$?" == 0 ]]; then
       log_success "is_writable returns true (0)"
