@@ -75,9 +75,9 @@ test_files() {
     actual=$( files is_dir "test_files.sh" )
     assert_eq 1 "$actual" "is_dir should return false (1) if dir exists but regular file"
     if [[ "$?" == 0 ]]; then
-      log_success "is_file returns false (1)"
+      log_success "is_dir returns false (1)"
     else
-      log_failure "is_file should return false (1)"
+      log_failure "is_dir should return false (1)"
     fi
 
   }
